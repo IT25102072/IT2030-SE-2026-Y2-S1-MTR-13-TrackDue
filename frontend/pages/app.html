@@ -1,0 +1,2777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackDue | Centralized Bill & Event Reminder System</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>
+    (function() {
+      const user = localStorage.getItem('trackdue_user');
+      if (!user) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ================= Left Sidebar (Any.do Style) ================= -->
+  <aside class="any-sidebar">
+    <!-- Brand Logo Header -->
+    <div class="sidebar-brand-header">
+      <div class="sidebar-brand-logo-box">
+        <img src="../assets/img/logo.png" alt="TrackDue Logo" class="sidebar-brand-img">
+      </div>
+      <div class="sidebar-brand-info">
+        <span class="sidebar-brand-title">TrackDue</span>
+        <span class="sidebar-brand-slogan">Never Miss What Matters</span>
+      </div>
+    </div>
+
+    <!-- User / Profile Header -->
+    <div class="sidebar-user">
+      <div class="user-meta" onclick="switchTab('profile')" style="cursor:pointer;" title="View & Edit Profile">
+        <div class="user-avatar-btn" id="sidebar-user-avatar" title="View & Edit Profile">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="user-name-title">
+          <span class="name" id="sidebar-user-name">User</span>
+          <span class="sub" id="sidebar-user-sub">Account</span>
+        </div>
+      </div>
+      <button class="sidebar-pin-btn" onclick="switchTab('profile')" title="My Profile & Settings"><i class="fa-solid fa-gear"></i></button>
+    </div>
+
+    <!-- Scrollable Navigation Items -->
+    <div class="sidebar-scroll">
+      <!-- User Navigation Section (Visible ONLY for standard users) -->
+      <div id="user-sidebar-section">
+        <a class="any-nav-item active" data-tab="myday" id="nav-item-myday">
+          <i class="fa-solid fa-circle-dot" style="color:#3b82f6;"></i>
+          <span>My day</span>
+        </a>
+        <a class="any-nav-item" data-tab="reminders" id="nav-item-reminders">
+          <i class="fa-regular fa-bell" style="color:#f59e0b;"></i>
+          <span>My Reminders</span>
+          <span class="item-badge" id="badge-reminders-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="notifications" id="nav-item-notifications">
+          <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
+          <span>Notifications</span>
+          <span class="item-badge" id="badge-notifications-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="next7days" id="nav-item-next7days">
+          <i class="fa-regular fa-calendar-days"></i>
+          <span>Next 7 days</span>
+          <span class="item-badge" id="badge-next7days-count">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="alltasks" id="nav-item-alltasks">
+          <i class="fa-solid fa-list-check"></i>
+          <span>All my tasks</span>
+          <span class="item-badge" id="badge-alltasks-count">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="calendar" id="nav-item-calendar">
+          <i class="fa-regular fa-calendar"></i>
+          <span>My Calendar</span>
+        </a>
+
+        <!-- Lists & Commitments -->
+        <div class="nav-section-title">
+          <span>My Lists</span>
+          <i class="fa-solid fa-plus add-btn" id="btn-quick-add-bill" title="Add Bill"></i>
+        </div>
+        <a class="any-nav-item" data-tab="bills" id="nav-item-bills">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
+          <span>Bills & Finance</span>
+          <span class="item-badge red" id="badge-overdue-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="events" id="nav-item-events">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
+          <span>Events & Deadlines</span>
+        </a>
+
+        <!-- Help & Feedback -->
+        <div class="nav-section-title">
+          <span>Help & Feedback</span>
+        </div>
+        <a class="any-nav-item" data-tab="support" id="nav-item-support">
+          <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
+          <span>Support Requests</span>
+          <span class="item-badge" id="badge-support-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="feedback" id="nav-item-feedback">
+          <i class="fa-regular fa-star" style="color:#eab308;"></i>
+          <span>Feedback</span>
+        </a>
+
+        <!-- Reports & Analytics -->
+        <div class="nav-section-title">
+          <span>Analytics & Reports</span>
+        </div>
+        <a class="any-nav-item" data-tab="reports" id="nav-item-user-reports">
+          <i class="fa-solid fa-chart-pie" style="color:#a855f7;"></i>
+          <span>Reports & History</span>
+        </a>
+
+        <!-- Account Settings -->
+        <div class="nav-section-title">
+          <span>My Account</span>
+        </div>
+        <a class="any-nav-item" data-tab="profile" id="nav-item-profile">
+          <i class="fa-solid fa-user-gear" style="color:#a855f7;"></i>
+          <span>Profile & Settings</span>
+        </a>
+      </div>
+
+      <!-- Admin Navigation Section (Visible ONLY for System Administrator) -->
+      <div id="admin-sidebar-section" class="admin-only-section" style="display: none;">
+        <div class="nav-section-title" style="color: #c084fc; margin-top: 4px;">
+          <span>Admin Console <i class="fa-solid fa-shield-halved" style="font-size:10px; margin-left:4px;"></i></span>
+        </div>
+        <a class="any-nav-item active" data-tab="admin-overview" id="nav-item-admin-overview">
+          <i class="fa-solid fa-gauge-high" style="color:#38bdf8;"></i>
+          <span>Platform Overview</span>
+        </a>
+        <a class="any-nav-item" data-tab="users" id="nav-item-users">
+          <i class="fa-solid fa-users" style="color:#c084fc;"></i>
+          <span>User Accounts</span>
+          <span class="item-badge" id="badge-users-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="support" id="nav-item-admin-support">
+          <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
+          <span>Support Helpdesk</span>
+          <span class="item-badge" id="badge-admin-support-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="feedback" id="nav-item-admin-feedback">
+          <i class="fa-regular fa-star" style="color:#fbbf24;"></i>
+          <span>User Feedback</span>
+          <span class="item-badge" id="badge-admin-feedback-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="reports" id="nav-item-reports">
+          <i class="fa-solid fa-chart-column" style="color:#8b5cf6;"></i>
+          <span>Reports & Overdue</span>
+        </a>
+        <a class="any-nav-item" data-tab="history" id="nav-item-history">
+          <i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i>
+          <span>Activity History</span>
+        </a>
+        <a class="any-nav-item" data-tab="notifications" id="nav-item-admin-notifications">
+          <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
+          <span>Notifications</span>
+          <span class="item-badge" id="badge-admin-notifs-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="profile" id="nav-item-admin-profile">
+          <i class="fa-solid fa-user-gear" style="color:#a855f7;"></i>
+          <span>Profile & Settings</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Bottom -->
+    <div class="sidebar-bottom">
+      <div style="padding: 10px 14px; font-size: 11.5px; color: var(--any-text-sub); text-align: center; border-top: 1px solid var(--any-border-subtle);">
+        TrackDue Workspace
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= Main Content Workspace ================= -->
+  <main class="any-main">
+
+    <!-- Signature Any.do Blue Petal Flower Artwork in Background -->
+    <div class="any-bg-artwork">
+      <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bluePetal1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.4" />
+          </linearGradient>
+          <linearGradient id="bluePetal2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#2563eb" stop-opacity="0.3" />
+          </linearGradient>
+          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.6" />
+            <stop offset="100%" stop-color="#141414" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <!-- Center Glow -->
+        <circle cx="480" cy="400" r="380" fill="url(#centerGlow)" />
+        <!-- Swirling Petals -->
+        <path d="M480,400 C350,220 520,60 660,140 C750,200 700,380 480,400 Z" fill="url(#bluePetal1)" />
+        <path d="M480,400 C660,280 820,400 760,540 C710,630 530,580 480,400 Z" fill="url(#bluePetal2)" />
+        <path d="M480,400 C580,580 420,740 280,680 C190,630 240,450 480,400 Z" fill="url(#bluePetal1)" />
+        <path d="M480,400 C300,520 140,400 200,260 C250,170 430,220 480,400 Z" fill="url(#bluePetal2)" />
+        <path d="M480,400 C420,220 280,120 180,220 C100,300 240,480 480,400 Z" fill="url(#bluePetal1)" opacity="0.75" />
+        <path d="M480,400 C540,580 680,680 780,580 C860,500 720,320 480,400 Z" fill="url(#bluePetal2)" opacity="0.75" />
+        <circle cx="480" cy="400" r="45" fill="#1d4ed8" opacity="0.8" />
+      </svg>
+    </div>
+
+    <!-- Top Navigation Bar (Any.do Style) -->
+    <header class="any-topbar">
+      <!-- Left: View Identifier / Title -->
+      <div class="topbar-left">
+        <div class="view-selector-btn" id="topbar-view-btn">
+          <i class="fa-solid fa-circle-dot"></i>
+          <span id="topbar-view-text">My day</span>
+        </div>
+        <div class="pill-filter-tag" id="topbar-list-tag">
+          <i class="fa-solid fa-lock" style="font-size:10px;"></i>
+          <span id="topbar-list-name">All Items</span>
+        </div>
+        <div class="pill-filter-tag" id="topbar-filter-btn">
+          <i class="fa-solid fa-bars-staggered" style="font-size:11px;"></i>
+          <span>Filter</span>
+        </div>
+      </div>
+
+      <!-- Center: Authenticated User Session Profile & Logout -->
+      <div class="user-session-bar" id="topbar-user-session-bar">
+        <div class="user-session-pill" onclick="switchTab('profile')" style="cursor:pointer;" title="View & Edit Profile">
+          <div class="user-session-avatar" id="topbar-user-avatar">
+            <i class="fa-regular fa-user"></i>
+          </div>
+          <div class="user-session-meta">
+            <span class="user-session-name" id="topbar-user-name">Account</span>
+          </div>
+        </div>
+        <button class="btn-logout-action" id="btn-logout-action" title="Sign out of TrackDue">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+
+      <!-- Right: Action Icons (Refresh, Support, Split, Search, Notifications) -->
+      <div class="topbar-right">
+        <button class="icon-action-btn" id="btn-topbar-refresh" title="Sync / Refresh">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <button class="icon-action-btn" onclick="switchTab('support')" title="Help & Support">
+          <i class="fa-solid fa-headset"></i>
+        </button>
+        <button class="icon-action-btn" onclick="switchTab('alltasks')" title="Split View">
+          <i class="fa-regular fa-square"></i>
+        </button>
+        <button class="icon-action-btn" id="btn-topbar-search" title="Search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button class="icon-action-btn" id="btn-topbar-notifs" title="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-bubble" id="topbar-notif-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= Scrollable Content Area ================= -->
+    <div class="any-content">
+
+      <!-- ================= VIEW 0: ADMIN PLATFORM OVERVIEW (ADMIN ONLY) ================= -->
+      <section id="view-admin-overview" class="view-section">
+        <!-- Admin Welcome Banner -->
+        <div class="myday-header-box" style="margin-bottom: 24px;">
+          <div class="greeting-row" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
+                Admin Control Center <span style="color:#38bdf8;">•</span>
+              </h1>
+              <p style="color: var(--any-text-muted); font-size: 14px; margin:0;">
+                Manage system users, broadcast in-app announcements, and customize global reminder templates.
+              </p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button class="btn-any-blue" onclick="openAdminBroadcastModal()" style="background:#3b82f6;">
+                <i class="fa-solid fa-bullhorn"></i> Broadcast Notification
+              </button>
+              <button class="btn-any-subtle" onclick="openAdminTemplatesModal()">
+                <i class="fa-solid fa-envelope-open-text" style="color:#c084fc;"></i> Global Reminder Templates
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin KPI Grid -->
+        <div class="stats-counter-grid">
+          <div class="stat-counter-card" onclick="switchTab('users')" style="cursor: pointer;">
+            <div class="icon-bubble" style="background: rgba(192, 132, 252, 0.15); color: #c084fc;">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-num" id="admin-kpi-users">0</div>
+              <div class="stat-lbl">Registered Users</div>
+            </div>
+          </div>
+
+          <div class="stat-counter-card" onclick="switchTab('support')" style="cursor: pointer;">
+            <div class="icon-bubble" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-num" id="admin-kpi-support">0</div>
+              <div class="stat-lbl">Support Tickets</div>
+            </div>
+          </div>
+
+          <div class="stat-counter-card" onclick="switchTab('feedback')" style="cursor: pointer;">
+            <div class="icon-bubble" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24;">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-num" id="admin-kpi-feedback">0</div>
+              <div class="stat-lbl">Feedback Reviews</div>
+            </div>
+          </div>
+
+          <div class="stat-counter-card" onclick="switchTab('history')" style="cursor: pointer;">
+            <div class="icon-bubble" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-num" id="admin-kpi-logs">0</div>
+              <div class="stat-lbl">Activity Logs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Quick Actions & Recent Users Panel -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="any-card-panel">
+            <div class="panel-header-row">
+              <h3><i class="fa-solid fa-users-gear" style="color:#c084fc;"></i> Registered User Accounts</h3>
+              <button class="btn-any-subtle" onclick="switchTab('users')" style="font-size:12px;">Manage Users</button>
+            </div>
+            <div id="admin-recent-users-list" style="display:flex; flex-direction:column; gap:10px;">
+              <div style="color:var(--any-text-muted); font-size:13px; text-align:center; padding:20px;">Loading users...</div>
+            </div>
+          </div>
+
+          <div class="any-card-panel">
+            <div class="panel-header-row">
+              <h3><i class="fa-solid fa-ticket" style="color:#06b6d4;"></i> Recent Support Tickets</h3>
+              <button class="btn-any-subtle" onclick="switchTab('support')" style="font-size:12px;">Open Helpdesk</button>
+            </div>
+            <div id="admin-recent-support-list" style="display:flex; flex-direction:column; gap:10px;">
+              <div style="color:var(--any-text-muted); font-size:13px; text-align:center; padding:20px;">Loading tickets...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 1: MY DAY (Screenshot 1) ================= -->
+      <section id="view-myday" class="view-section active">
+        <div class="myday-container">
+          <div class="myday-greeting">
+            <h2><span id="myday-greeting-text">Welcome Back</span><span class="greeting-dot">•</span></h2>
+            <p id="myday-greeting-sub">Track organizational bills, events and schedules</p>
+          </div>
+
+          <!-- Date Banner Card (Exact Any.do Component) -->
+          <div class="any-date-banner">
+            <div class="date-badge-box">
+              <span class="day-abbr" id="myday-banner-day">MON</span>
+              <span class="date-num" id="myday-banner-num">14</span>
+              <span class="month-name" id="myday-banner-month">September</span>
+            </div>
+            <div class="date-banner-info">
+              <span class="title">Quick Actions & Integration</span>
+              <div class="sub-links">
+                <span class="sub-link-item" onclick="switchTab('reports')">
+                  <i class="fa-solid fa-bolt" style="color:#ef4444;"></i> View Overdue Bills (<span id="myday-overdue-stat">0</span>)
+                </span>
+                <span class="sub-link-item" onclick="switchTab('calendar')">
+                  <i class="fa-solid fa-calendar-check" style="color:#3b82f6;"></i> Upcoming Events (<span id="myday-events-stat">0</span>)
+                </span>
+                <span class="sub-link-item" onclick="switchTab('support')">
+                  <i class="fa-solid fa-ticket" style="color:#10b981;"></i> Support Tickets (<span id="myday-support-stat">0</span>)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Metric Stats Row -->
+          <div class="any-stats-row">
+            <div class="any-stat-pill" onclick="switchTab('bills')">
+              <i class="fa-solid fa-file-invoice stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-num" id="stat-total-bills">0</span>
+                <span class="stat-lbl">Total Bills</span>
+              </div>
+            </div>
+            <div class="any-stat-pill danger" onclick="switchTab('reports')">
+              <i class="fa-solid fa-circle-exclamation stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-num" id="stat-overdue-bills">0</span>
+                <span class="stat-lbl">Overdue Bills</span>
+              </div>
+            </div>
+            <div class="any-stat-pill" onclick="switchTab('events')">
+              <i class="fa-solid fa-calendar-day stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-num" id="stat-upcoming-events">0</span>
+                <span class="stat-lbl">Upcoming Events</span>
+              </div>
+            </div>
+            <div class="any-stat-pill" onclick="switchTab('reminders')">
+              <i class="fa-solid fa-bell stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-num" id="stat-total-reminders">0</span>
+                <span class="stat-lbl">Reminders</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's Watchlist -->
+          <div style="margin-top:28px;">
+            <div class="inspector-section-label" style="margin-bottom:12px;">
+              <span>TODAY'S PRIORITY ITEMS</span>
+              <button class="btn-any-subtle" style="padding:3px 10px; font-size:11px;" onclick="openAddBillModal()">+ Add Bill</button>
+            </div>
+            <div id="myday-task-list" style="display:flex; flex-direction:column; gap:8px;">
+              <!-- Loaded via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 2: NEXT 7 DAYS KANBAN (Screenshot 2) ================= -->
+      <section id="view-next7days" class="view-section">
+        <div class="kanban-board-container" id="kanban-columns-wrapper">
+          <!-- Dynamically populated 7-day columns -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 3: ALL TASKS & BILLS 2-PANE (Screenshot 3 & 5) ================= -->
+      <section id="view-alltasks" class="view-section">
+        <div class="two-pane-container">
+          <!-- Left Task List Pane -->
+          <div class="task-list-pane">
+            <div class="task-group-title">
+              <span>Today</span>
+              <span class="item-badge" id="group-count-today">0</span>
+            </div>
+            <div id="list-group-today" style="display:flex; flex-direction:column; gap:4px;"></div>
+
+            <div class="task-group-title">
+              <span>Tomorrow</span>
+              <span class="item-badge" id="group-count-tomorrow">0</span>
+            </div>
+            <div id="list-group-tomorrow" style="display:flex; flex-direction:column; gap:4px;"></div>
+
+            <div class="task-group-title">
+              <span>Upcoming</span>
+              <span class="item-badge" id="group-count-upcoming">0</span>
+            </div>
+            <div id="list-group-upcoming" style="display:flex; flex-direction:column; gap:4px;"></div>
+
+            <div class="task-group-title">
+              <span style="color:#f87171;">Overdue</span>
+              <span class="item-badge red" id="group-count-overdue">0</span>
+            </div>
+            <div id="list-group-overdue" style="display:flex; flex-direction:column; gap:4px;"></div>
+          </div>
+
+          <!-- Right Task Detail Inspector Pane -->
+          <div class="task-inspector-pane" id="task-inspector">
+            <div class="inspector-topbar">
+              <div class="inspector-breadcrumbs">
+                <i class="fa-solid fa-lock" style="font-size:10px;"></i>
+                <span id="insp-category-crumb">My lists &gt; Bills</span>
+              </div>
+              <div class="inspector-quick-actions">
+                <button class="mark-complete-btn" id="insp-mark-complete-btn">
+                  <i class="fa-regular fa-circle-check"></i>
+                  <span>Mark as complete</span>
+                </button>
+                <i class="fa-regular fa-trash-can" style="color:#666; cursor:pointer;" id="insp-delete-btn" title="Delete"></i>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <input type="text" class="inspector-title-input" id="insp-title" placeholder="Task or Bill Name">
+
+            <!-- Action Tag Pills -->
+            <div class="inspector-tags-row">
+              <button class="inspector-tag-btn" id="insp-tag-reminder">
+                <i class="fa-regular fa-bell" style="color:#f87171;"></i> <span id="insp-tag-reminder-text">Remind me</span>
+              </button>
+              <button class="inspector-tag-btn" id="insp-tag-category">
+                <i class="fa-regular fa-file-lines" style="color:#f59e0b;"></i> <span id="insp-tag-category-text">Category</span>
+              </button>
+              <button class="inspector-tag-btn" id="insp-tag-status">
+                <i class="fa-solid fa-tag" style="color:#3b82f6;"></i> <span id="insp-tag-status-text">Status</span>
+              </button>
+              <button class="inspector-tag-btn" id="insp-tag-amount">
+                <i class="fa-solid fa-coins" style="color:#10b981;"></i> <span id="insp-tag-amount-text">Amount</span>
+              </button>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="inspector-section-label">NOTES</div>
+            <textarea class="inspector-notes-area" id="insp-notes" placeholder="Insert your notes here..."></textarea>
+
+            <!-- Subtasks / Settlement Checklist -->
+            <div class="inspector-section-label">
+              <span>SUBTASKS / PAYMENTS <span id="insp-subtasks-count">0/1</span></span>
+              <i class="fa-solid fa-ellipsis" style="color:#666; cursor:pointer;"></i>
+            </div>
+            <div class="subtasks-bar-container">
+              <div class="subtasks-bar-fill" id="insp-subtasks-progress"></div>
+            </div>
+            <div class="subtask-add-row" id="insp-subtask-item">
+              <div class="circle-checkbox" id="insp-subtask-check"></div>
+              <span id="insp-subtask-label">Settle invoice via bank transfer or online gateway</span>
+            </div>
+
+            <!-- Attachments Box -->
+            <div class="inspector-section-label" style="margin-top:20px;">ATTACHMENTS</div>
+            <div class="attachments-drop-zone" onclick="showToast('File attachment simulation ready', 'info')">
+              Click to add / drop your receipt or bill files here
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 4: MY CALENDAR ================= -->
+      <section id="view-calendar" class="view-section">
+        <div class="calendar-view-container">
+          <!-- Calendar Top Header -->
+          <div class="calendar-top-header">
+            <div class="cal-header-left">
+              <button class="cal-today-pill" id="cal-today-btn" onclick="calToday()">TODAY</button>
+              <div class="cal-nav-arrows">
+                <button class="cal-nav-btn" id="cal-prev-btn" onclick="calPrev()" title="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="cal-nav-btn" id="cal-next-btn" onclick="calNext()" title="Next"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+              <span class="cal-month-title" id="cal-month-label">September 2026</span>
+              <button class="cal-connect-pill" onclick="refreshCalendarData(); showToast('Calendar synced with your bills and events', 'success')"><i class="fa-solid fa-rotate"></i> Sync</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <!-- Segmented View Mode Toggle: MONTH / WEEK -->
+              <div class="cal-view-mode-toggle">
+                <button class="cal-mode-btn active" id="cal-btn-mode-month" onclick="setCalendarMode('month')">MONTH</button>
+                <button class="cal-mode-btn" id="cal-btn-mode-week" onclick="setCalendarMode('week')">WEEK</button>
+              </div>
+              <button class="btn-any-subtle" style="padding:5px 12px; font-size:12px;" onclick="openAddBillModal()"><i class="fa-solid fa-plus"></i> Bill</button>
+              <button class="btn-any-blue" style="padding:5px 14px; font-size:12px;" onclick="openAddEventModal()"><i class="fa-solid fa-plus"></i> Event</button>
+            </div>
+          </div>
+
+          <!-- MONTH VIEW CONTAINER -->
+          <div id="cal-month-view-wrapper" class="cal-view-wrapper active">
+            <div class="cal-month-header-row">
+              <div class="cal-month-col-head">MON</div>
+              <div class="cal-month-col-head">TUE</div>
+              <div class="cal-month-col-head">WED</div>
+              <div class="cal-month-col-head">THU</div>
+              <div class="cal-month-col-head">FRI</div>
+              <div class="cal-month-col-head">SAT</div>
+              <div class="cal-month-col-head">SUN</div>
+            </div>
+            <div class="cal-month-grid" id="cal-month-grid">
+              <!-- Dynamically populated via renderCalendarMonth() -->
+            </div>
+          </div>
+
+          <!-- WEEK VIEW CONTAINER -->
+          <div id="cal-week-view-wrapper" class="cal-view-wrapper" style="display:none;">
+            <!-- Calendar Days Header (7 Days of the Week) -->
+            <div class="cal-days-header-row" id="cal-days-header">
+              <div class="cal-day-cell-head"><span class="cal-day-name">TIME</span></div>
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- Calendar Hourly Grid Body -->
+            <div class="cal-grid-body" id="cal-grid-body">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 5: BILLS MANAGEMENT ================= -->
+      <section id="view-bills" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <h3><i class="fa-solid fa-file-invoice-dollar"></i> Organizational Bills</h3>
+            <button class="btn-any-blue" onclick="openAddBillModal()"><i class="fa-solid fa-plus"></i> Add Bill</button>
+          </div>
+          <div class="any-input-row">
+            <input type="text" class="any-input-field" id="bills-search-box" placeholder="Search bills..." style="flex-grow:1;">
+            <select class="any-input-field" id="bills-category-select">
+              <option value="ALL">All Categories</option>
+              <option value="Electricity">Electricity</option>
+              <option value="Water">Water</option>
+              <option value="Internet">Internet</option>
+              <option value="Software">Software</option>
+              <option value="Rent">Rent</option>
+              <option value="Insurance">Insurance</option>
+            </select>
+            <select class="any-input-field" id="bills-status-select">
+              <option value="ALL">All Statuses</option>
+              <option value="PENDING">PENDING</option>
+              <option value="OVERDUE">OVERDUE</option>
+              <option value="PAID">PAID</option>
+            </select>
+          </div>
+          <table class="any-table-box" id="table-bills-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Bill Name</th>
+                <th>Category</th>
+                <th>Amount (LKR)</th>
+                <th>Due Date</th>
+                <th>Pattern</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 6: EVENTS MANAGEMENT ================= -->
+      <section id="view-events" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <h3><i class="fa-solid fa-calendar-check"></i> Events & Audits</h3>
+            <button class="btn-any-blue" onclick="openAddEventModal()"><i class="fa-solid fa-plus"></i> Add Event</button>
+          </div>
+          <div class="any-input-row">
+            <input type="text" class="any-input-field" id="events-search-box" placeholder="Search events by name, location..." style="flex-grow:1;">
+            <select class="any-input-field" id="events-category-select">
+              <option value="ALL">All Categories</option>
+              <option value="Meeting">Meeting</option>
+              <option value="Conference">Conference</option>
+              <option value="Deadline">Deadline</option>
+              <option value="Audit">Audit</option>
+              <option value="Training">Training</option>
+              <option value="Celebration">Celebration</option>
+              <option value="Personal">Personal</option>
+            </select>
+            <select class="any-input-field" id="events-status-select">
+              <option value="ALL">All Statuses</option>
+              <option value="UPCOMING">UPCOMING</option>
+              <option value="COMPLETED">COMPLETED</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+          </div>
+          <table class="any-table-box" id="table-events-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Event Name</th>
+                <th>Category</th>
+                <th>Date & Time</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 7: REMINDERS HUB ================= -->
+      <section id="view-reminders" class="view-section">
+        <div class="rem-container">
+          
+          <!-- Header Banner -->
+          <div class="rem-header-banner">
+            <div class="rem-header-left">
+              <h2><i class="fa-regular fa-bell"></i> Scheduled Reminders</h2>
+              <p>Manage, track, and customize automated alerts for bills, invoices, and organization events.</p>
+            </div>
+            <button class="btn-any-blue" onclick="openAddReminderModal()">
+              <i class="fa-solid fa-plus"></i> Schedule Reminder
+            </button>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div class="rem-kpi-grid">
+            <div class="rem-kpi-card kpi-total" onclick="filterRemindersByType('ALL')">
+              <div class="rem-kpi-icon"><i class="fa-solid fa-layer-group"></i></div>
+              <div class="rem-kpi-info">
+                <span class="rem-kpi-val" id="kpi-rem-total">0</span>
+                <span class="rem-kpi-label">Total Reminders</span>
+              </div>
+            </div>
+            <div class="rem-kpi-card kpi-bills" onclick="filterRemindersByType('BILLS')">
+              <div class="rem-kpi-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div class="rem-kpi-info">
+                <span class="rem-kpi-val" id="kpi-rem-bills">0</span>
+                <span class="rem-kpi-label">Bill Reminders</span>
+              </div>
+            </div>
+            <div class="rem-kpi-card kpi-events" onclick="filterRemindersByType('EVENTS')">
+              <div class="rem-kpi-icon"><i class="fa-solid fa-calendar-check"></i></div>
+              <div class="rem-kpi-info">
+                <span class="rem-kpi-val" id="kpi-rem-events">0</span>
+                <span class="rem-kpi-label">Event Reminders</span>
+              </div>
+            </div>
+            <div class="rem-kpi-card kpi-active" onclick="filterRemindersByStatus('ACTIVE')">
+              <div class="rem-kpi-icon"><i class="fa-solid fa-bell"></i></div>
+              <div class="rem-kpi-info">
+                <span class="rem-kpi-val" id="kpi-rem-active">0</span>
+                <span class="rem-kpi-label">Active Alerts</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Toolbar -->
+          <div class="rem-toolbar">
+            <div class="rem-segmented-nav">
+              <button type="button" class="rem-seg-btn active" id="btn-rem-filter-all" onclick="filterRemindersByType('ALL')">
+                <i class="fa-solid fa-border-all"></i> All Reminders <span class="rem-seg-count" id="count-tab-all">0</span>
+              </button>
+              <button type="button" class="rem-seg-btn" id="btn-rem-filter-bills" onclick="filterRemindersByType('BILLS')">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Bill Reminders <span class="rem-seg-count" id="count-tab-bills">0</span>
+              </button>
+              <button type="button" class="rem-seg-btn" id="btn-rem-filter-events" onclick="filterRemindersByType('EVENTS')">
+                <i class="fa-solid fa-calendar-check"></i> Event Reminders <span class="rem-seg-count" id="count-tab-events">0</span>
+              </button>
+            </div>
+
+            <div class="rem-toolbar-right">
+              <div class="rem-search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="rem-search-input" id="input-rem-search" placeholder="Search reminders..." oninput="handleReminderSearch(this.value)">
+              </div>
+              <select class="rem-status-select" id="select-rem-status" onchange="handleReminderStatusFilter(this.value)">
+                <option value="ALL">All Statuses</option>
+                <option value="ACTIVE">Active Only</option>
+                <option value="TRIGGERED">Triggered</option>
+                <option value="DISMISSED">Dismissed</option>
+                <option value="CANCELLED">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECTION 1: BILL REMINDERS -->
+          <div class="rem-section-panel" id="section-bill-reminders">
+            <div class="rem-panel-header">
+              <div class="rem-panel-title">
+                <div class="rem-panel-icon bill-type">
+                  <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <div>
+                  <h3>Bill & Payment Reminders</h3>
+                  <p>Scheduled notifications for upcoming bills, utility dues, and financial commitments</p>
+                </div>
+              </div>
+              <span class="rem-count-pill bill-pill" id="badge-bill-reminders-count">0 Bills</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="any-table-box" id="table-reminders-bills">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">ID</th>
+                    <th>Target Bill & Details</th>
+                    <th>Due Date & Amount</th>
+                    <th>Scheduled Alert</th>
+                    <th>Recurrence</th>
+                    <th>Status</th>
+                    <th style="text-align: right; width: 140px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-reminders-bills"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECTION 2: EVENT REMINDERS -->
+          <div class="rem-section-panel" id="section-event-reminders">
+            <div class="rem-panel-header">
+              <div class="rem-panel-title">
+                <div class="rem-panel-icon event-type">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                  <h3>Event & Deadline Reminders</h3>
+                  <p>Scheduled notifications for meetings, conferences, audits, and deadlines</p>
+                </div>
+              </div>
+              <span class="rem-count-pill event-pill" id="badge-event-reminders-count">0 Events</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="any-table-box" id="table-reminders-events">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">ID</th>
+                    <th>Target Event & Details</th>
+                    <th>Event Date & Venue</th>
+                    <th>Scheduled Alert</th>
+                    <th>Recurrence</th>
+                    <th>Status</th>
+                    <th style="text-align: right; width: 140px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-reminders-events"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= VIEW 8: REPORTS, ANALYTICS & HISTORY ================= -->
+      <section id="view-reports" class="view-section">
+        <!-- Reports Header Banner -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status resolved" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-chart-pie"></i> ANALYTICS & AUDIT
+                </span>
+              </div>
+              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
+                Reports, Analytics & History
+              </h1>
+              <p style="color: var(--any-text-muted); font-size: 13.5px; max-width: 840px; line-height: 1.5; margin: 0;">
+                Track pending bill obligations, average commitments, settled payments, event attendance rate, view uploaded payment receipts, and export statements in CSV, Excel, or Print / PDF.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <button class="btn-any-subtle" onclick="exportReportsData('csv')" title="Download CSV Spreadsheet">
+                <i class="fa-solid fa-file-csv" style="color:#10b981;"></i> Export CSV
+              </button>
+              <button class="btn-any-subtle" onclick="exportReportsData('excel')" title="Download Excel (.xls) Spreadsheet">
+                <i class="fa-solid fa-file-excel" style="color:#22c55e;"></i> Export Excel
+              </button>
+              <button class="btn-any-subtle" onclick="exportReportsData('print')" title="Print or PDF Statement">
+                <i class="fa-solid fa-print" style="color:#38bdf8;"></i> Print / PDF
+              </button>
+              <button class="btn-any-subtle" onclick="loadReportsView()" title="Refresh Analytics">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Analytics Metric Cards -->
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 20px;">
+            <!-- Pending Bills Card -->
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="rep-stat-pending-bills" style="color:#f59e0b;">0</div>
+                <div class="stat-lbl">Pending Bills</div>
+                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-pending-amount">LKR 0.00</div>
+                <div style="font-size:11px; color:#93c5fd; margin-top:3px;" id="rep-stat-avg-pending">Avg: LKR 0.00 / bill</div>
+              </div>
+            </div>
+
+            <!-- Paid Bills & Receipts Card -->
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="rep-stat-paid-bills" style="color:#10b981;">0</div>
+                <div class="stat-lbl">Paid Bills Settled</div>
+                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-paid-amount">LKR 0.00</div>
+                <div style="font-size:11px; color:#a7f3d0; margin-top:3px;" id="rep-stat-receipts-count"><i class="fa-solid fa-receipt"></i> 0 Receipts Uploaded</div>
+              </div>
+            </div>
+
+            <!-- Upcoming Events Card -->
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                <i class="fa-regular fa-calendar"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="rep-stat-upcoming-events" style="color:#38bdf8;">0</div>
+                <div class="stat-lbl">Upcoming Events</div>
+                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-total-events">0 Total Events</div>
+                <div style="font-size:11px; color:var(--any-text-muted); margin-top:3px;">Scheduled Ahead</div>
+              </div>
+            </div>
+
+            <!-- Attended Events Card -->
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="rep-stat-completed-events" style="color:#c084fc;">0</div>
+                <div class="stat-lbl">Attended Events</div>
+                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-attendance-rate">0% Attendance</div>
+                <div style="font-size:11px; color:#e9d5ff; margin-top:3px;">Completed & Verified</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Navigation Segmented Buttons -->
+        <div class="rem-segmented-nav" style="margin-bottom: 16px;">
+          <button type="button" class="rem-seg-btn active" id="btn-rep-subtab-bills" onclick="switchReportsSubTab('BILLS')">
+            <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i> Bills & Receipts
+            <span class="item-badge" id="badge-rep-bills-count">0</span>
+          </button>
+          <button type="button" class="rem-seg-btn" id="btn-rep-subtab-events" onclick="switchReportsSubTab('EVENTS')">
+            <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i> Events & Attendance
+            <span class="item-badge" id="badge-rep-events-count">0</span>
+          </button>
+          <button type="button" class="rem-seg-btn" id="btn-rep-subtab-history" onclick="switchReportsSubTab('HISTORY')">
+            <i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i> Audit Activity History
+          </button>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="any-card-panel" style="margin-bottom: 20px; padding: 14px 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; gap:10px; align-items:center; flex-grow:1; flex-wrap:wrap;">
+              <div style="position:relative; min-width:240px; flex-grow:1;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--any-text-muted); font-size:12px;"></i>
+                <input type="text" class="any-input-field" id="rep-search-input" placeholder="Search by name, category, status..." oninput="handleReportsFilter()" style="padding-left:34px; width:100%;">
+              </div>
+              <select class="any-input-field" id="rep-status-filter" onchange="handleReportsFilter()" style="min-width:140px;">
+                <option value="ALL">All Statuses</option>
+                <option value="PENDING">PENDING</option>
+                <option value="PAID">PAID</option>
+                <option value="OVERDUE">OVERDUE</option>
+                <option value="COMPLETED">COMPLETED (Attended)</option>
+                <option value="UPCOMING">UPCOMING</option>
+              </select>
+              <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--any-text-muted);">
+                <span>From:</span>
+                <input type="date" class="any-input-field" id="rep-filter-from" onchange="handleReportsFilter()" style="font-size:12px; padding:6px 10px;">
+                <span>To:</span>
+                <input type="date" class="any-input-field" id="rep-filter-to" onchange="handleReportsFilter()" style="font-size:12px; padding:6px 10px;">
+              </div>
+            </div>
+            <div>
+              <button type="button" class="btn-any-subtle" onclick="resetReportsFilters()" style="padding:6px 12px; font-size:12px;">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SUBPANE 1: BILLS & RECEIPTS ================= -->
+        <div id="rep-subpane-bills" class="any-card-panel" style="margin-top: 0;">
+          <div class="panel-header-row" style="margin-bottom: 12px;">
+            <div>
+              <h3 style="margin:0;"><i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i> Bills, Settlements & Payment Receipts</h3>
+              <p style="font-size:12px; color:var(--any-text-muted); margin-top:2px;">View bill payment status, settle pending liabilities, upload payment receipts, and review proof of payment.</p>
+            </div>
+            <button class="btn-any-blue" onclick="openAddBillModal()">
+              <i class="fa-solid fa-plus"></i> Add New Bill
+            </button>
+          </div>
+
+          <table class="any-table-box" id="table-rep-bills">
+            <thead>
+              <tr>
+                <th>Bill ID</th>
+                <th>Bill Title & Category</th>
+                <th>Amount (LKR)</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Paid Date</th>
+                <th>Payment Receipt</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-rep-bills">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ================= SUBPANE 2: EVENTS & ATTENDANCE ================= -->
+        <div id="rep-subpane-events" class="any-card-panel" style="margin-top: 0; display:none;">
+          <div class="panel-header-row" style="margin-bottom: 12px;">
+            <div>
+              <h3 style="margin:0;"><i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i> Organizational Events & Attendance Record</h3>
+              <p style="font-size:12px; color:var(--any-text-muted); margin-top:2px;">Track upcoming events, view schedule details, and log your attendance (Attended / Completed).</p>
+            </div>
+            <button class="btn-any-blue" onclick="openAddEventModal()">
+              <i class="fa-solid fa-plus"></i> Add New Event
+            </button>
+          </div>
+
+          <table class="any-table-box" id="table-rep-events">
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Event Title & Category</th>
+                <th>Date & Time</th>
+                <th>Location</th>
+                <th>Attendance Status</th>
+                <th style="text-align:right;">Attendance Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-rep-events">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ================= SUBPANE 3: ACTIVITY HISTORY ================= -->
+        <div id="rep-subpane-history" class="any-card-panel" style="margin-top: 0; display:none;">
+          <div class="panel-header-row" style="margin-bottom: 12px;">
+            <div>
+              <h3 style="margin:0;"><i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i> Portfolio Activity History & Audit Trail</h3>
+              <p style="font-size:12px; color:var(--any-text-muted); margin-top:2px;">Detailed chronological record of created, updated, and settled items.</p>
+            </div>
+            <button class="btn-any-subtle" onclick="loadHistoryView()">
+              <i class="fa-solid fa-rotate-right"></i> Refresh Logs
+            </button>
+          </div>
+
+          <table class="any-table-box" id="table-rep-history">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Details</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-rep-history">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 9: ACTIVITY HISTORY ================= -->
+      <section id="view-history" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Activity History</h3>
+            <button class="btn-any-subtle" id="btn-refresh-history"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+          </div>
+          <div class="any-input-row">
+            <input type="text" class="any-input-field" id="history-search-box" placeholder="Search user, action, module..." style="flex-grow:1;">
+            <select class="any-input-field" id="history-module-select">
+              <option value="ALL">All Modules</option>
+              <option value="USER">USER</option>
+              <option value="BILL">BILL</option>
+              <option value="EVENT">EVENT</option>
+              <option value="REMINDER">REMINDER</option>
+              <option value="SUPPORT">SUPPORT</option>
+              <option value="FEEDBACK">FEEDBACK</option>
+            </select>
+            <select class="any-input-field" id="history-action-select">
+              <option value="ALL">All Actions</option>
+              <option value="CREATE">CREATE</option>
+              <option value="UPDATE">UPDATE</option>
+              <option value="DELETE">DELETE</option>
+              <option value="STATUS_CHANGE">STATUS_CHANGE</option>
+              <option value="LOGIN">LOGIN</option>
+            </select>
+          </div>
+          <table class="any-table-box" id="table-history-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Details</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 10: SUPPORT REQUESTS ================= -->
+      <section id="view-support" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <div>
+              <h3><i class="fa-solid fa-headset"></i> Support Request Management</h3>
+              <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">Track system tickets, error reporting, and live progress pipeline</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <!-- View Switcher (Pipeline Board vs Table List) -->
+              <div id="support-view-toggle-wrap" style="display:flex; background:#181818; padding:3px; border-radius:var(--radius-sm); border:1px solid var(--any-border);">
+                <button type="button" class="btn-any-subtle active" id="btn-support-kanban" onclick="setSupportViewMode('kanban')" style="padding:4px 12px; font-size:12px; border-radius:6px;">
+                  <i class="fa-solid fa-columns"></i> Pipeline Board
+                </button>
+                <button type="button" class="btn-any-subtle" id="btn-support-table" onclick="setSupportViewMode('table')" style="padding:4px 12px; font-size:12px; border-radius:6px;">
+                  <i class="fa-solid fa-list-check"></i> List View
+                </button>
+              </div>
+              <button class="btn-any-blue" id="btn-open-submit-ticket" onclick="openSubmitSupportModal()"><i class="fa-solid fa-plus"></i> Submit Ticket</button>
+            </div>
+          </div>
+
+          <!-- KANBAN PIPELINE BOARD (Interactive Drag & Drop) -->
+          <div id="support-pipeline-container" style="margin-top:20px;">
+            <div class="support-pipeline-grid">
+              <!-- Column 1: OPEN / Received -->
+              <div class="pipeline-col" id="col-status-OPEN" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event, 'OPEN')">
+                <div class="pipeline-col-header col-open">
+                  <div class="pipeline-col-title">
+                    <i class="fa-solid fa-inbox" style="color:#f59e0b;"></i>
+                    <span>Request Received</span>
+                  </div>
+                  <span class="pipeline-col-badge" id="col-count-OPEN">0</span>
+                </div>
+                <div class="pipeline-col-cards" id="cards-col-OPEN"></div>
+              </div>
+
+              <!-- Column 2: IN_PROGRESS / Fixing Started -->
+              <div class="pipeline-col" id="col-status-IN_PROGRESS" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event, 'IN_PROGRESS')">
+                <div class="pipeline-col-header col-in-progress">
+                  <div class="pipeline-col-title">
+                    <i class="fa-solid fa-screwdriver-wrench" style="color:#3b82f6;"></i>
+                    <span>Fixing Started</span>
+                  </div>
+                  <span class="pipeline-col-badge" id="col-count-IN_PROGRESS">0</span>
+                </div>
+                <div class="pipeline-col-cards" id="cards-col-IN_PROGRESS"></div>
+              </div>
+
+              <!-- Column 3: RESOLVED / Error Fixed -->
+              <div class="pipeline-col" id="col-status-RESOLVED" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event, 'RESOLVED')">
+                <div class="pipeline-col-header col-resolved">
+                  <div class="pipeline-col-title">
+                    <i class="fa-solid fa-circle-check" style="color:#10b981;"></i>
+                    <span>Error Fixed</span>
+                  </div>
+                  <span class="pipeline-col-badge" id="col-count-RESOLVED">0</span>
+                </div>
+                <div class="pipeline-col-cards" id="cards-col-RESOLVED"></div>
+              </div>
+
+              <!-- Column 4: CLOSED -->
+              <div class="pipeline-col" id="col-status-CLOSED" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event, 'CLOSED')">
+                <div class="pipeline-col-header col-closed">
+                  <div class="pipeline-col-title">
+                    <i class="fa-solid fa-box-archive" style="color:#64748b;"></i>
+                    <span>Closed</span>
+                  </div>
+                  <span class="pipeline-col-badge" id="col-count-CLOSED">0</span>
+                </div>
+                <div class="pipeline-col-cards" id="cards-col-CLOSED"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE LIST VIEW -->
+          <div id="support-table-container" style="display:none; margin-top:16px;">
+            <table class="any-table-box" id="table-support-full">
+              <thead>
+                <tr>
+                  <th>Ticket</th>
+                  <th>User</th>
+                  <th>Subject</th>
+                  <th>Category</th>
+                  <th>Message</th>
+                  <th>Admin Response</th>
+                  <th>Status & Progress</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 11: FEEDBACK & REVIEWS ================= -->
+      <section id="view-feedback" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <div>
+              <h3><i class="fa-regular fa-star"></i> Feedback & Reviews</h3>
+              <p style="font-size:12px; color:var(--any-text-muted); margin-top:2px;">User reviews, system rating and platform suggestions</p>
+            </div>
+            <button class="btn-any-blue" id="btn-feedback-action" onclick="openFeedbackActionModal()"><i class="fa-solid fa-star"></i> Give Feedback</button>
+          </div>
+
+          <!-- Spotlight: Current User's Submitted Feedback Card -->
+          <div id="user-feedback-spotlight" style="display:none; margin-top:16px;"></div>
+
+          <table class="any-table-box" id="table-feedback-full" style="margin-top:16px;">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Type</th>
+                <th>Rating</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th style="text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 12: USER ACCOUNTS (ADMIN ONLY) ================= -->
+      <section id="view-users" class="view-section">
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <div>
+              <h3><i class="fa-solid fa-users"></i> Registered User Directory</h3>
+              <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">Administrative view of all registered accounts and active status</p>
+            </div>
+            <button class="btn-any-subtle" onclick="loadUsersView()"><i class="fa-solid fa-rotate-right"></i> Refresh Users</button>
+          </div>
+
+          <!-- User Stats KPI Counter Row for Admin -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 20px;">
+            <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
+              <div style="font-size: 26px; font-weight: 800; color: #c084fc;" id="admin-user-count">0</div>
+              <div style="font-size: 12px; color: var(--any-text-muted);">Total Registered Users</div>
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
+              <div style="font-size: 26px; font-weight: 800; color: #34d399;" id="admin-active-count">0</div>
+              <div style="font-size: 12px; color: var(--any-text-muted);">Active Accounts</div>
+            </div>
+            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
+              <div style="font-size: 26px; font-weight: 800; color: #60a5fa;" id="admin-reminders-total">0</div>
+              <div style="font-size: 12px; color: var(--any-text-muted);">System Reminders</div>
+            </div>
+          </div>
+
+          <table class="any-table-box" id="table-users-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 13: USER PROFILE & ACCOUNT SETTINGS ================= -->
+      <section id="view-profile" class="view-section">
+        <div class="profile-container">
+          <!-- Profile Header Banner -->
+          <div class="myday-header-box" style="margin-bottom: 24px;">
+            <div class="greeting-row">
+              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
+                Account & Profile Settings <span style="color:#a855f7;">•</span>
+              </h1>
+              <p style="color: var(--any-text-muted); font-size: 14px;">
+                Manage your personal information, security credentials, and account settings.
+              </p>
+            </div>
+          </div>
+
+          <!-- Hero User Badge Row -->
+          <div class="profile-hero-card">
+            <div class="profile-hero-avatar" id="profile-hero-avatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="profile-hero-info">
+              <h2 id="profile-hero-name" style="font-size: 22px; font-weight: 700; color: #ffffff;">Loading User...</h2>
+              <div class="profile-hero-meta">
+                <span id="profile-hero-email" style="color: var(--any-text-muted); font-size: 13px;"><i class="fa-regular fa-envelope"></i> -</span>
+                <span class="profile-badge-pill" id="profile-hero-role">Standard User</span>
+                <span class="profile-badge-pill active-badge" id="profile-hero-status"><i class="fa-solid fa-circle-check"></i> Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Content Layout (2 Columns Grid) -->
+          <div class="profile-sections-grid">
+            <!-- Left Column: Personal Information & Details -->
+            <div class="any-card-panel">
+              <div class="panel-header-row" style="margin-bottom: 16px;">
+                <div>
+                  <h3 style="font-size: 16px; font-weight: 600; color: #fff;">
+                    <i class="fa-regular fa-id-card" style="color:#3b82f6; margin-right: 8px;"></i>Personal Information
+                  </h3>
+                  <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">
+                    Update your display name and contact details across TrackDue
+                  </p>
+                </div>
+              </div>
+
+              <form id="form-profile-details" onsubmit="handleProfileUpdate(event)">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                  <div class="any-form-group">
+                    <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">First Name *</label>
+                    <input type="text" class="any-input-field" id="profile-first-name" required placeholder="First name" style="width: 100%;">
+                  </div>
+                  <div class="any-form-group">
+                    <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Last Name *</label>
+                    <input type="text" class="any-input-field" id="profile-last-name" required placeholder="Last name" style="width: 100%;">
+                  </div>
+                </div>
+
+                <div class="any-form-group" style="margin-bottom: 14px;">
+                  <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Email Address (Account ID)</label>
+                  <input type="email" class="any-input-field" id="profile-email-input" readonly disabled style="width: 100%; opacity: 0.65; cursor: not-allowed; background: #181818;">
+                  <small style="color: var(--any-text-sub); font-size: 11px; margin-top: 4px; display: block;">Email is your permanent login identifier.</small>
+                </div>
+
+                <div class="any-form-group" style="margin-bottom: 20px;">
+                  <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Phone Number</label>
+                  <input type="tel" class="any-input-field" id="profile-phone-input" placeholder="+94 77 123 4567" style="width: 100%;">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                  <button type="submit" class="btn-any-blue" id="btn-save-profile">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right Column: Password & Security Reset -->
+            <div class="any-card-panel">
+              <div class="panel-header-row" style="margin-bottom: 16px;">
+                <div>
+                  <h3 style="font-size: 16px; font-weight: 600; color: #fff;">
+                    <i class="fa-solid fa-lock" style="color:#10b981; margin-right: 8px;"></i>Change / Reset Password
+                  </h3>
+                  <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">
+                    Ensure your account is protected with a secure password
+                  </p>
+                </div>
+              </div>
+
+              <form id="form-profile-password" onsubmit="handlePasswordUpdate(event)">
+                <div class="any-form-group" style="margin-bottom: 14px;">
+                  <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Current Password *</label>
+                  <div style="position: relative;">
+                    <input type="password" class="any-input-field" id="profile-current-password" required placeholder="Enter current password" style="width: 100%; padding-right: 40px;">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('profile-current-password', this)"><i class="fa-regular fa-eye"></i></button>
+                  </div>
+                </div>
+
+                <div class="any-form-group" style="margin-bottom: 14px;">
+                  <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">New Password * (Min 4 chars)</label>
+                  <div style="position: relative;">
+                    <input type="password" class="any-input-field" id="profile-new-password" required minlength="4" placeholder="Enter new password" style="width: 100%; padding-right: 40px;">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('profile-new-password', this)"><i class="fa-regular fa-eye"></i></button>
+                  </div>
+                </div>
+
+                <div class="any-form-group" style="margin-bottom: 20px;">
+                  <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Confirm New Password *</label>
+                  <div style="position: relative;">
+                    <input type="password" class="any-input-field" id="profile-confirm-password" required minlength="4" placeholder="Re-type new password" style="width: 100%; padding-right: 40px;">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('profile-confirm-password', this)"><i class="fa-regular fa-eye"></i></button>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                  <button type="submit" class="btn-any-blue" id="btn-save-password" style="background: #10b981;">
+                    <i class="fa-solid fa-key"></i> Update Password
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Bottom: Danger Zone (Delete Account) -->
+          <div class="danger-zone-card" style="margin-top: 24px;">
+            <div class="danger-zone-content">
+              <div class="danger-icon-box">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <div>
+                <h4 style="font-size: 16px; font-weight: 700; color: #ef4444; margin-bottom: 4px;">Delete Account Permanently</h4>
+                <p style="font-size: 13px; color: var(--any-text-muted); line-height: 1.4;">
+                  Deleting your account will permanently remove your profile, bills, events, reminders, and all associated personal data from TrackDue. This action cannot be undone.
+                </p>
+              </div>
+            </div>
+            <button type="button" class="btn-danger-delete" onclick="openDeleteAccountModal()">
+              <i class="fa-solid fa-trash-can"></i> Delete My Account
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= VIEW: NOTIFICATION MANAGEMENT CENTER ================= -->
+      <section id="view-notifications" class="view-section">
+        <!-- Notification Header Banner -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status pending" style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-bell"></i> IN-APP NOTIFICATIONS
+                </span>
+              </div>
+              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
+                Notification Management Center
+              </h1>
+              <p style="color: var(--any-text-muted); font-size: 13.5px; max-width: 840px; line-height: 1.5; margin: 0;">
+                Manage in-app reminder notifications, customize alert messages, create custom reminders, and track alert status.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button class="btn-any-blue" onclick="openUserTemplatesModal()" style="background:#8b5cf6;" title="Customize personal reminder message formats">
+                <i class="fa-solid fa-sliders"></i> Customize Message Formats
+              </button>
+              <button class="btn-any-subtle" onclick="markAllNotificationsAsRead()" title="Mark all alerts as read">
+                <i class="fa-solid fa-check-double"></i> Mark All as Read
+              </button>
+              <button class="btn-any-subtle" onclick="loadNotificationsView()" title="Refresh">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards (4 Cards) -->
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 20px;">
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                <i class="fa-solid fa-bell"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="notif-stat-total">0</div>
+                <div class="stat-lbl">Total Notifications</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                <i class="fa-solid fa-circle-dot"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="notif-stat-unread" style="color:#f59e0b;">0</div>
+                <div class="stat-lbl">Unread Alerts</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="notif-stat-read" style="color:#10b981;">0</div>
+                <div class="stat-lbl">Read Notifications</div>
+              </div>
+            </div>
+
+            <div class="stat-counter-card" onclick="openUserTemplatesModal()" style="cursor:pointer;" title="Click to customize formats">
+              <div class="icon-bubble" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                <i class="fa-solid fa-sliders"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" style="font-size: 13.5px; color: #c084fc;" id="notif-stat-auto-alerts">Auto-Dispatched</div>
+                <div class="stat-lbl">Automated Alert Formats</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search, Filter, and Count Bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; gap:10px; align-items:center; flex-grow:1; max-width:600px;">
+            <div style="position:relative; flex-grow:1;">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--any-text-muted); font-size:12px;"></i>
+              <input type="text" class="any-input-field" id="notif-search-input" placeholder="Search notifications by title or message..." style="width:100%; padding-left:34px; font-size:12.5px;" oninput="filterNotificationsList()">
+            </div>
+            <div class="filter-pills-row" style="display:flex; gap:6px;">
+              <button class="filter-pill active" onclick="filterNotifsByStatus('ALL', this)">All</button>
+              <button class="filter-pill" onclick="filterNotifsByStatus('UNREAD', this)"><i class="fa-solid fa-circle-dot" style="font-size:8px; color:#f59e0b;"></i> Unread</button>
+              <button class="filter-pill" onclick="filterNotifsByStatus('READ', this)"><i class="fa-solid fa-check" style="font-size:10px; color:#10b981;"></i> Read</button>
+            </div>
+          </div>
+          <div style="font-size:12.5px; color:var(--any-text-muted);" id="notif-count-summary-text">
+            Showing all notifications
+          </div>
+        </div>
+
+        <!-- Notifications List with In-App Alerts, Message Customization & CRUD -->
+        <div id="notifications-inbox-list" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Loaded dynamically by JS -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Quick Add Input Bar (Any.do Style) -->
+    <div class="any-bottom-bar">
+      <div class="quick-add-input-box" onclick="openAddBillModal()">
+        <i class="fa-solid fa-plus"></i>
+        <input type="text" placeholder="Add task or bill in personal... (Click to add)" readonly>
+        <i class="fa-solid fa-robot" style="color:#10b981;" title="Smart AI Scheduler"></i>
+      </div>
+    </div>
+
+    <!-- Floating Action Button (+ Create) in Bottom Right (Any.do Style) -->
+    <button class="any-floating-btn" onclick="openAddBillModal()" title="Add New Item">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </main>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Modal: Add Bill -->
+<div class="any-modal-overlay" id="modal-bill">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3 id="modal-bill-title">Add New Bill</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-bill')">&times;</button>
+    </div>
+    <form id="form-bill">
+      <div class="any-modal-body">
+        <input type="hidden" id="bill-id">
+        <div class="any-form-group">
+          <label>Bill Name *</label>
+          <input type="text" class="any-input-field" id="bill-name" required placeholder="e.g. Internet Leased Line" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label style="margin:0;">Category *</label>
+              <button type="button" class="btn-any-subtle" onclick="toggleCustomCategoryInput('bill')" style="padding:1px 6px; font-size:11px; color:#38bdf8; border:none; background:transparent;" title="Type custom category">
+                <i class="fa-solid fa-plus"></i> Custom Category
+              </button>
+            </div>
+            <select class="any-input-field" id="bill-category" required style="width:100%;" onchange="handleCategoryDropdownChange('bill')">
+              <option value="Electricity">Electricity</option>
+              <option value="Water">Water</option>
+              <option value="Internet">Internet</option>
+              <option value="Software">Software</option>
+              <option value="Rent">Rent</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Telephone">Telephone / Mobile</option>
+              <option value="Medical">Medical / Healthcare</option>
+              <option value="Education">Education / Tuition</option>
+              <option value="Loan">Loan / EMI</option>
+              <option value="Other">Other</option>
+              <option value="__CUSTOM__">+ Type Custom Category...</option>
+            </select>
+            <div id="grp-bill-category-custom" style="display:none; margin-top:6px;">
+              <div style="position:relative;">
+                <input type="text" class="any-input-field" id="bill-category-custom" placeholder="Type new category (e.g. Fuel, Hospital, Gym...)" style="width:100%; padding-right:26px; border-color:#38bdf8;">
+                <button type="button" onclick="closeCustomCategoryInput('bill')" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--any-text-muted); cursor:pointer; font-size:14px;" title="Cancel custom category">&times;</button>
+              </div>
+            </div>
+          </div>
+          <div class="any-form-group">
+            <label>Amount (LKR) *</label>
+            <input type="number" step="0.01" class="any-input-field" id="bill-amount" required placeholder="35000.00" style="width:100%;">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Due Date *</label>
+            <input type="date" class="any-input-field" id="bill-due-date" required style="width:100%;" onchange="updateReminderPreview('bill')">
+          </div>
+          <div class="any-form-group">
+            <label>Recurrence</label>
+            <select class="any-input-field" id="bill-recurring" style="width:100%;">
+              <option value="NONE">None</option>
+              <option value="MONTHLY">Monthly</option>
+              <option value="QUARTERLY">Quarterly</option>
+              <option value="ANNUALLY">Annually</option>
+            </select>
+          </div>
+        </div>
+        <div class="any-form-group" id="grp-bill-status">
+          <label>Status</label>
+          <select class="any-input-field" id="bill-status" style="width:100%;">
+            <option value="PENDING">PENDING</option>
+            <option value="PAID">PAID</option>
+            <option value="OVERDUE">OVERDUE</option>
+          </select>
+        </div>
+
+        <!-- Reminder Scheduling Section for Bill -->
+        <div class="reminder-config-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--any-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
+            <label style="font-size:12.5px; font-weight:600; color:#fff; display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="bill-reminder-enable" checked onchange="toggleReminderSection('bill')">
+              <i class="fa-regular fa-bell" style="color:#f59e0b;"></i> Schedule Alert Reminder
+            </label>
+            <span style="font-size:11px; color:#10b981; font-weight:600;" id="bill-reminder-status-tag">Active</span>
+          </div>
+
+          <div id="bill-reminder-controls">
+            <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:10px;">
+              <div class="any-form-group" style="margin-bottom:0;">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;">Remind Before</label>
+                <select class="any-input-field" id="bill-reminder-offset" style="width:100%; font-size:12px;" onchange="handleReminderOffsetChange('bill')">
+                  <option value="SAME_DAY">On Due Date (Same Day)</option>
+                  <option value="1_DAY" selected>1 Day Before</option>
+                  <option value="2_DAYS">2 Days Before</option>
+                  <option value="3_DAYS">3 Days Before</option>
+                  <option value="5_DAYS">5 Days Before</option>
+                  <option value="1_WEEK">1 Week (7 Days) Before</option>
+                  <option value="CUSTOM_DAYS">Custom Days Before...</option>
+                  <option value="CUSTOM_HOURS">Custom Hours Before...</option>
+                </select>
+              </div>
+
+              <div class="any-form-group" style="margin-bottom:0;" id="bill-reminder-time-group">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;">Alert Time</label>
+                <input type="time" class="any-input-field" id="bill-reminder-time" value="09:00" style="width:100%; font-size:12px;" onchange="updateReminderPreview('bill')">
+              </div>
+
+              <div class="any-form-group" style="margin-bottom:0; display:none;" id="bill-reminder-custom-input-group">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;" id="bill-reminder-custom-label">Days Before</label>
+                <input type="number" min="1" max="90" class="any-input-field" id="bill-reminder-custom-value" value="3" style="width:100%; font-size:12px;" oninput="updateReminderPreview('bill')">
+              </div>
+            </div>
+
+            <!-- Dynamic calculated reminder date preview -->
+            <div class="reminder-preview-banner" id="bill-reminder-preview" style="font-size:11.5px; color:#60a5fa; margin-top:8px; display:flex; align-items:center; gap:6px; background:rgba(59,130,246,0.08); padding:6px 10px; border-radius:6px; border:1px solid rgba(59,130,246,0.2);">
+              <i class="fa-solid fa-clock"></i>
+              <span id="bill-reminder-preview-text">Reminder will notify 1 day before due date at 09:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="any-form-group">
+          <label>Notes / Description</label>
+          <textarea class="any-input-field" id="bill-description" rows="2" style="width:100%;" placeholder="Vendor details, payment account..."></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-bill')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Save Bill</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Add / Edit Event -->
+<div class="any-modal-overlay" id="modal-event">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3 id="modal-event-title">Add Organizational Event</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-event')">&times;</button>
+    </div>
+    <form id="form-event">
+      <div class="any-modal-body">
+        <input type="hidden" id="event-id">
+        <div class="any-form-group">
+          <label>Event Name *</label>
+          <input type="text" class="any-input-field" id="event-name" required placeholder="e.g. Q3 Financial Review" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label style="margin:0;">Category *</label>
+              <button type="button" class="btn-any-subtle" onclick="toggleCustomCategoryInput('event')" style="padding:1px 6px; font-size:11px; color:#38bdf8; border:none; background:transparent;" title="Type custom category">
+                <i class="fa-solid fa-plus"></i> Custom Category
+              </button>
+            </div>
+            <select class="any-input-field" id="event-category" required style="width:100%;" onchange="handleCategoryDropdownChange('event')">
+              <option value="Meeting">Meeting</option>
+              <option value="Conference">Conference</option>
+              <option value="Deadline">Deadline</option>
+              <option value="Audit">Audit</option>
+              <option value="Training">Training</option>
+              <option value="Celebration">Celebration</option>
+              <option value="Personal">Personal</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Interview">Interview</option>
+              <option value="__CUSTOM__">+ Type Custom Category...</option>
+            </select>
+            <div id="grp-event-category-custom" style="display:none; margin-top:6px;">
+              <div style="position:relative;">
+                <input type="text" class="any-input-field" id="event-category-custom" placeholder="Type new category (e.g. Workshop, Sports, Medical...)" style="width:100%; padding-right:26px; border-color:#38bdf8;">
+                <button type="button" onclick="closeCustomCategoryInput('event')" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--any-text-muted); cursor:pointer; font-size:14px;" title="Cancel custom category">&times;</button>
+              </div>
+            </div>
+          </div>
+          <div class="any-form-group">
+            <label>Location</label>
+            <input type="text" class="any-input-field" id="event-location" placeholder="e.g. Boardroom A" style="width:100%;">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Event Date *</label>
+            <input type="date" class="any-input-field" id="event-date" required style="width:100%;" onchange="updateReminderPreview('event')">
+          </div>
+          <div class="any-form-group">
+            <label>Time</label>
+            <input type="time" class="any-input-field" id="event-time" style="width:100%;" onchange="updateReminderPreview('event')">
+          </div>
+        </div>
+        <div class="any-form-group">
+          <label>Status</label>
+          <select class="any-input-field" id="event-status" style="width:100%;">
+            <option value="UPCOMING">UPCOMING</option>
+            <option value="COMPLETED">COMPLETED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+        </div>
+
+        <!-- Reminder Scheduling Section for Event -->
+        <div class="reminder-config-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--any-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
+            <label style="font-size:12.5px; font-weight:600; color:#fff; display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="event-reminder-enable" checked onchange="toggleReminderSection('event')">
+              <i class="fa-regular fa-bell" style="color:#0ea5e9;"></i> Schedule Alert Reminder
+            </label>
+            <span style="font-size:11px; color:#10b981; font-weight:600;" id="event-reminder-status-tag">Active</span>
+          </div>
+
+          <div id="event-reminder-controls">
+            <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:10px;">
+              <div class="any-form-group" style="margin-bottom:0;">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;">Remind Before</label>
+                <select class="any-input-field" id="event-reminder-offset" style="width:100%; font-size:12px;" onchange="handleReminderOffsetChange('event')">
+                  <option value="AT_TIME">At Event Time</option>
+                  <option value="1_HOUR">1 Hour Before</option>
+                  <option value="2_HOURS" selected>2 Hours Before</option>
+                  <option value="3_HOURS">3 Hours Before</option>
+                  <option value="1_DAY">1 Day Before</option>
+                  <option value="2_DAYS">2 Days Before</option>
+                  <option value="1_WEEK">1 Week Before</option>
+                  <option value="CUSTOM_HOURS">Custom Hours Before...</option>
+                  <option value="CUSTOM_DAYS">Custom Days Before...</option>
+                </select>
+              </div>
+
+              <div class="any-form-group" style="margin-bottom:0;" id="event-reminder-time-group">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;">Alert Time</label>
+                <input type="time" class="any-input-field" id="event-reminder-time" value="09:00" style="width:100%; font-size:12px;" onchange="updateReminderPreview('event')">
+              </div>
+
+              <div class="any-form-group" style="margin-bottom:0; display:none;" id="event-reminder-custom-input-group">
+                <label style="font-size:11px; color:var(--any-text-muted); margin-bottom:4px; display:block;" id="event-reminder-custom-label">Hours Before</label>
+                <input type="number" min="1" max="72" class="any-input-field" id="event-reminder-custom-value" value="2" style="width:100%; font-size:12px;" oninput="updateReminderPreview('event')">
+              </div>
+            </div>
+
+            <!-- Dynamic calculated reminder date preview -->
+            <div class="reminder-preview-banner" id="event-reminder-preview" style="font-size:11.5px; color:#38bdf8; margin-top:8px; display:flex; align-items:center; gap:6px; background:rgba(56,189,248,0.08); padding:6px 10px; border-radius:6px; border:1px solid rgba(56,189,248,0.2);">
+              <i class="fa-solid fa-clock"></i>
+              <span id="event-reminder-preview-text">Reminder will notify 2 hours before event</span>
+            </div>
+          </div>
+        </div>
+        <div class="any-form-group">
+          <label>Notes / Description</label>
+          <textarea class="any-input-field" id="event-description" rows="2" style="width:100%;" placeholder="Agenda, location details, notes..."></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-event')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Save Event</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Schedule Reminder -->
+<div class="any-modal-overlay" id="modal-reminder">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3>Schedule Reminder</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-reminder')">&times;</button>
+    </div>
+    <form id="form-reminder">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Attach To *</label>
+          <select class="any-input-field" id="reminder-type-select" style="width:100%;">
+            <option value="BILL">Bill</option>
+            <option value="EVENT">Event</option>
+            <option value="CUSTOM">Personal Reminder / Task</option>
+          </select>
+        </div>
+        <div class="any-form-group" id="grp-rem-bill">
+          <label>Select Bill</label>
+          <select class="any-input-field" id="rem-bill-id" style="width:100%;"></select>
+        </div>
+        <div class="any-form-group" id="grp-rem-event" style="display:none;">
+          <label>Select Event</label>
+          <select class="any-input-field" id="rem-event-id" style="width:100%;"></select>
+        </div>
+        <div class="any-form-group" id="grp-rem-custom" style="display:none;">
+          <label>Reminder Title / Description *</label>
+          <input type="text" class="any-input-field" id="rem-custom-title" placeholder="e.g. Review personal insurance" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Reminder Date *</label>
+            <input type="date" class="any-input-field" id="rem-date" required style="width:100%;">
+          </div>
+          <div class="any-form-group">
+            <label>Alert Time</label>
+            <input type="time" class="any-input-field" id="rem-time" style="width:100%;">
+          </div>
+          <div class="any-form-group">
+            <label>Recurrence</label>
+            <select class="any-input-field" id="rem-recurrence" style="width:100%;">
+              <option value="ONCE">Once</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-reminder')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Schedule</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: View Reminder Details -->
+<div class="any-modal-overlay" id="modal-view-reminder">
+  <div class="any-modal-card" style="max-width: 540px;">
+    <div class="any-modal-header">
+      <h3 id="view-rem-header-title"><i class="fa-regular fa-bell"></i> Reminder Details</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-view-reminder')">&times;</button>
+    </div>
+    <div class="any-modal-body">
+      <div id="view-rem-target-banner" style="display:flex; align-items:center; gap:14px; padding:14px 16px; background:#222; border-radius:8px; border:1px solid var(--any-border); margin-bottom:16px;">
+        <div id="view-rem-type-icon" style="width:42px; height:42px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;"></div>
+        <div style="flex-grow:1;">
+          <h4 id="view-rem-target-name" style="font-size:15px; font-weight:700; color:#fff; margin:0;">-</h4>
+          <div id="view-rem-target-sub" style="font-size:12px; color:var(--any-text-muted); margin-top:3px;">-</div>
+        </div>
+      </div>
+
+      <div class="rem-modal-detail-grid">
+        <div class="rem-modal-detail-item">
+          <span class="rem-modal-detail-label"><i class="fa-regular fa-calendar"></i> Reminder Date</span>
+          <span class="rem-modal-detail-val" id="view-rem-date">-</span>
+        </div>
+        <div class="rem-modal-detail-item">
+          <span class="rem-modal-detail-label"><i class="fa-regular fa-clock"></i> Alert Time</span>
+          <span class="rem-modal-detail-val" id="view-rem-time">-</span>
+        </div>
+        <div class="rem-modal-detail-item">
+          <span class="rem-modal-detail-label"><i class="fa-solid fa-repeat"></i> Recurrence</span>
+          <span class="rem-modal-detail-val" id="view-rem-recurrence">-</span>
+        </div>
+        <div class="rem-modal-detail-item">
+          <span class="rem-modal-detail-label"><i class="fa-solid fa-circle-check"></i> Status</span>
+          <div id="view-rem-status-badge">-</div>
+        </div>
+        <div class="rem-modal-detail-item full-width" id="view-rem-extra-box">
+          <span class="rem-modal-detail-label"><i class="fa-solid fa-circle-info"></i> Target Item Details</span>
+          <div id="view-rem-extra-content" style="font-size:12.5px; color:#d1d5db; line-height:1.5; margin-top:4px;">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="any-modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+      <button type="button" class="btn-any-subtle" style="color:#ef4444; border-color:rgba(239,68,68,0.3);" id="btn-view-rem-delete">
+        <i class="fa-solid fa-trash"></i> Delete
+      </button>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-view-reminder')">Close</button>
+        <button type="button" class="btn-any-blue" id="btn-view-rem-edit">
+          <i class="fa-solid fa-pen-to-square"></i> Edit Reminder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Edit Reminder -->
+<div class="any-modal-overlay" id="modal-edit-reminder">
+  <div class="any-modal-card" style="max-width: 520px;">
+    <div class="any-modal-header">
+      <h3><i class="fa-solid fa-pen-to-square"></i> Edit Reminder</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-edit-reminder')">&times;</button>
+    </div>
+    <form id="form-edit-reminder">
+      <input type="hidden" id="edit-rem-id">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Target Association</label>
+          <div id="edit-rem-target-desc" style="padding:10px 14px; background:#222; border-radius:6px; font-size:13px; color:#fff; border:1px solid var(--any-border); display:flex; align-items:center; gap:8px;">
+            -
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Reminder Date *</label>
+            <input type="date" class="any-input-field" id="edit-rem-date" required style="width:100%;">
+          </div>
+          <div class="any-form-group">
+            <label>Alert Time</label>
+            <input type="time" class="any-input-field" id="edit-rem-time" style="width:100%;">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Recurrence</label>
+            <select class="any-input-field" id="edit-rem-recurrence" style="width:100%;">
+              <option value="ONCE">Once (Single Alert)</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+            </select>
+          </div>
+          <div class="any-form-group">
+            <label>Status</label>
+            <select class="any-input-field" id="edit-rem-status" style="width:100%;">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="TRIGGERED">TRIGGERED</option>
+              <option value="DISMISSED">DISMISSED</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-edit-reminder')">Cancel</button>
+        <button type="submit" class="btn-any-blue"><i class="fa-solid fa-floppy-disk"></i> Update Reminder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Send Test Notification -->
+<div class="any-modal-overlay" id="modal-test-notification">
+  <div class="any-modal-card" style="max-width: 500px;">
+    <div class="any-modal-header">
+      <h3><i class="fa-solid fa-paper-plane" style="color:#3b82f6;"></i> Send Test Notification</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-test-notification')">&times;</button>
+    </div>
+    <form id="form-test-notification" onsubmit="handleTestNotificationSubmit(event)">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Delivery Channel *</label>
+          <select class="any-input-field" id="test-notif-channel" style="width:100%;" required>
+            <option value="EMAIL">Email Notification (✉️)</option>
+            <option value="SMS">SMS Notification (📱)</option>
+            <option value="IN_APP">In-App Notification (🔔)</option>
+          </select>
+        </div>
+        <div class="any-form-group">
+          <label>Notification Title *</label>
+          <input type="text" class="any-input-field" id="test-notif-title" required placeholder="e.g. Test Reminder: Bill Payment Due" value="Test Reminder: Bill Payment Due" style="width:100%;">
+        </div>
+        <div class="any-form-group">
+          <label>Message Content *</label>
+          <textarea class="any-input-field" id="test-notif-message" rows="3" required style="width:100%;" placeholder="Enter reminder message...">This is an automated test reminder notification sent to verify channel delivery configuration.</textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-test-notification')">Cancel</button>
+        <button type="submit" class="btn-any-blue" style="background:#3b82f6;">
+          <i class="fa-solid fa-paper-plane"></i> Dispatch Notification
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Submit Support -->
+<div class="any-modal-overlay" id="modal-support-submit">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3>Submit Support Request</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-support-submit')">&times;</button>
+    </div>
+    <form id="form-support-submit">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Subject *</label>
+          <input type="text" class="any-input-field" id="support-subject" required placeholder="Issue summary" style="width:100%;">
+        </div>
+        <div class="any-form-group">
+          <label>Category *</label>
+          <select class="any-input-field" id="support-category" style="width:100%;">
+            <option value="Technical Issue">Technical Issue</option>
+            <option value="Account Issue">Account Issue</option>
+            <option value="Bill Inquiry">Bill Inquiry</option>
+            <option value="Event Question">Event Question</option>
+          </select>
+        </div>
+        <div class="any-form-group">
+          <label>Message *</label>
+          <textarea class="any-input-field" id="support-message" rows="3" required style="width:100%;" placeholder="Describe the problem..."></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-support-submit')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Manage Support (Admin Response) -->
+<div class="any-modal-overlay" id="modal-support-manage">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3>Manage Support Request</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-support-manage')">&times;</button>
+    </div>
+    <form id="form-support-manage">
+      <div class="any-modal-body">
+        <input type="hidden" id="manage-support-id">
+        <div class="any-form-group">
+          <label>Ticket</label>
+          <div id="manage-support-subject" style="font-weight:600; color:#fff; font-size:14px;"></div>
+        </div>
+        <div class="any-form-group">
+          <label>User Message</label>
+          <div id="manage-support-msg" style="color:var(--any-text-muted); font-size:13px; background:#242424; padding:8px; border-radius:6px;"></div>
+        </div>
+        <div class="any-form-group">
+          <label>Admin Response *</label>
+          <textarea class="any-input-field" id="manage-support-response" rows="3" style="width:100%;" placeholder="Enter resolution details..."></textarea>
+        </div>
+        <div class="any-form-group">
+          <label>Status *</label>
+          <select class="any-input-field" id="manage-support-status" style="width:100%;">
+            <option value="OPEN">OPEN</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="RESOLVED">RESOLVED</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-support-manage')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Save Response</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Submit Feedback -->
+<div class="any-modal-overlay" id="modal-feedback-submit">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3>Submit Feedback</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-feedback-submit')">&times;</button>
+    </div>
+    <form id="form-feedback-submit">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Type *</label>
+          <select class="any-input-field" id="feedback-type" style="width:100%;">
+            <option value="SUGGESTION">Suggestion</option>
+            <option value="FEEDBACK">Feedback</option>
+            <option value="COMPLAINT">Complaint</option>
+          </select>
+        </div>
+        <div class="any-form-group">
+          <label>Rating (1 to 5 Stars)</label>
+          <div style="display:flex; gap:6px; font-size:22px; cursor:pointer;" id="feedback-star-box">
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="1"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="2"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="3"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="4"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="5"></i>
+          </div>
+          <input type="hidden" id="feedback-rating-val" value="5">
+        </div>
+        <div class="any-form-group">
+          <label>Message *</label>
+          <textarea class="any-input-field" id="feedback-message" rows="3" required style="width:100%;" placeholder="Your thoughts..."></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-feedback-submit')">Cancel</button>
+        <button type="submit" class="btn-any-blue">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: View Support Ticket Details (User & Admin with Live Progress Pipeline) -->
+<div class="any-modal-overlay" id="modal-support-view">
+  <div class="any-modal-card" style="max-width: 560px;">
+    <div class="any-modal-header" style="border-bottom: 1px solid var(--any-border);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="badge-status open" id="view-support-status-badge">OPEN</span>
+        <h3 id="view-support-modal-title" style="margin:0; font-size:16px; font-weight:700; color:#fff;">Ticket #</h3>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-support-view')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="display:flex; flex-direction:column; gap:18px; max-height:75vh; overflow-y:auto;">
+      
+      <!-- Live Stepper Pipeline Tracker -->
+      <div style="background:#181818; border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:16px;">
+        <div style="font-size:11px; font-weight:700; color:var(--any-text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">
+          <i class="fa-solid fa-timeline"></i> Resolution Pipeline Status
+        </div>
+        <div class="support-stepper" id="view-support-stepper">
+          <div class="support-stepper-progress" id="view-support-stepper-line" style="width: 0%;"></div>
+          
+          <!-- Step 1 -->
+          <div class="stepper-step active" id="step-open">
+            <div class="stepper-circle"><i class="fa-solid fa-inbox"></i></div>
+            <div class="stepper-title">Received</div>
+          </div>
+          
+          <!-- Step 2 -->
+          <div class="stepper-step" id="step-in-progress">
+            <div class="stepper-circle"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <div class="stepper-title">Fixing Started</div>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="stepper-step" id="step-resolved">
+            <div class="stepper-circle"><i class="fa-solid fa-check-double"></i></div>
+            <div class="stepper-title">Error Fixed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Metadata Details -->
+      <div class="rem-modal-detail-grid" style="margin-bottom:0;">
+        <div class="rem-modal-detail-item">
+          <div class="rem-modal-detail-label"><i class="fa-solid fa-user"></i> Submitted By</div>
+          <div class="rem-modal-detail-val" id="view-support-user">-</div>
+        </div>
+        <div class="rem-modal-detail-item">
+          <div class="rem-modal-detail-label"><i class="fa-solid fa-layer-group"></i> Category</div>
+          <div class="rem-modal-detail-val" id="view-support-category">-</div>
+        </div>
+        <div class="rem-modal-detail-item full-width">
+          <div class="rem-modal-detail-label"><i class="fa-solid fa-heading"></i> Subject</div>
+          <div class="rem-modal-detail-val" id="view-support-subject" style="color:#60a5fa; font-size:15px;">-</div>
+        </div>
+      </div>
+
+      <!-- Problem Description Message -->
+      <div>
+        <div class="rem-modal-detail-label" style="margin-bottom:6px;"><i class="fa-solid fa-comment-dots"></i> Issue Description</div>
+        <div id="view-support-msg" style="background:#181818; border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:14px; color:#e2e8f0; font-size:13.5px; line-height:1.5; white-space:pre-wrap;"></div>
+      </div>
+
+      <!-- Admin Resolution Response -->
+      <div>
+        <div class="rem-modal-detail-label" style="margin-bottom:6px;"><i class="fa-solid fa-headset"></i> Support Team Response</div>
+        <div id="view-support-admin-reply" style="background:rgba(16, 185, 129, 0.08); border:1px solid rgba(16, 185, 129, 0.25); border-radius:var(--radius-sm); padding:14px; color:#a7f3d0; font-size:13px; line-height:1.5; white-space:pre-wrap;">
+          No response from admin yet. Our support engineering team will examine the issue promptly.
+        </div>
+      </div>
+
+    </div>
+    <div class="any-modal-footer" style="display:flex; justify-content:space-between;">
+      <div>
+        <button type="button" class="btn-any-subtle" id="btn-view-support-delete" style="color:#ef4444;" onclick="handleViewSupportDelete()">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-any-subtle" id="btn-view-support-edit" onclick="handleViewSupportEdit()">
+          <i class="fa-solid fa-pen-to-square"></i> Edit Ticket
+        </button>
+        <button type="button" class="btn-any-blue" onclick="closeModal('modal-support-view')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Edit Support Ticket (User & Admin) -->
+<div class="any-modal-overlay" id="modal-support-edit">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3>Edit Support Ticket</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-support-edit')">&times;</button>
+    </div>
+    <form id="form-support-edit" onsubmit="handleSupportEditSubmit(event)">
+      <input type="hidden" id="edit-support-id">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Subject *</label>
+          <input type="text" class="any-input-field" id="edit-support-subject" required style="width:100%;">
+        </div>
+        <div class="any-form-group">
+          <label>Category *</label>
+          <select class="any-input-field" id="edit-support-category" style="width:100%;">
+            <option value="Technical Issue">Technical Issue</option>
+            <option value="Account Issue">Account Issue</option>
+            <option value="Bill Inquiry">Bill Inquiry</option>
+            <option value="Event Question">Event Question</option>
+          </select>
+        </div>
+        <div class="any-form-group">
+          <label>Message *</label>
+          <textarea class="any-input-field" id="edit-support-message" rows="4" required style="width:100%; resize:vertical;"></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-support-edit')">Cancel</button>
+        <button type="submit" class="btn-any-blue"><i class="fa-solid fa-floppy-disk"></i> Update Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Edit Submitted Feedback (1 Feedback per user limitation) -->
+<div class="any-modal-overlay" id="modal-feedback-edit">
+  <div class="any-modal-card">
+    <div class="any-modal-header">
+      <h3><i class="fa-solid fa-pen-to-square" style="color:#fbbf24;"></i> Edit Your Feedback</h3>
+      <button class="any-modal-close" onclick="closeModal('modal-feedback-edit')">&times;</button>
+    </div>
+    <form id="form-feedback-edit" onsubmit="handleFeedbackEditSubmit(event)">
+      <input type="hidden" id="edit-feedback-id">
+      <div class="any-modal-body">
+        <div class="any-form-group">
+          <label>Type *</label>
+          <select class="any-input-field" id="edit-feedback-type" style="width:100%;">
+            <option value="SUGGESTION">Suggestion</option>
+            <option value="FEEDBACK">Feedback</option>
+            <option value="COMPLAINT">Complaint</option>
+          </select>
+        </div>
+        <div class="any-form-group">
+          <label>Rating (1 to 5 Stars)</label>
+          <div style="display:flex; gap:6px; font-size:22px; cursor:pointer;" id="edit-feedback-star-box">
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="1"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="2"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="3"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="4"></i>
+            <i class="fa-solid fa-star" style="color:#fbbf24;" data-r="5"></i>
+          </div>
+          <input type="hidden" id="edit-feedback-rating-val" value="5">
+        </div>
+        <div class="any-form-group">
+          <label>Message *</label>
+          <textarea class="any-input-field" id="edit-feedback-message" rows="4" required style="width:100%;" placeholder="Your thoughts..."></textarea>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-feedback-edit')">Cancel</button>
+        <button type="submit" class="btn-any-blue"><i class="fa-solid fa-floppy-disk"></i> Save Feedback Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Calendar Item Detail Popup -->
+<div class="any-modal-overlay" id="modal-calendar-item-detail">
+  <div class="any-modal-card" style="max-width: 480px;">
+    <div class="any-modal-header" style="border-bottom: 1px solid var(--any-border);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span id="cal-modal-type-badge" class="badge-status" style="font-size:11px; padding:3px 8px;">BILL</span>
+        <h3 id="cal-modal-title" style="margin:0; font-size:16px; font-weight:700; color:#fff;">Item Name</h3>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-calendar-item-detail')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="padding:20px; display:flex; flex-direction:column; gap:16px;">
+      <div class="cal-detail-grid">
+        <div class="cal-detail-item">
+          <span class="cal-detail-label"><i class="fa-regular fa-calendar" style="color:var(--any-blue);"></i> Date & Time</span>
+          <span class="cal-detail-val" id="cal-modal-datetime">-</span>
+        </div>
+        <div class="cal-detail-item">
+          <span class="cal-detail-label"><i class="fa-solid fa-tag" style="color:#c084fc;"></i> Category</span>
+          <span class="cal-detail-val" id="cal-modal-category">-</span>
+        </div>
+        <div class="cal-detail-item" id="cal-modal-amount-row">
+          <span class="cal-detail-label"><i class="fa-solid fa-coins" style="color:var(--any-green);"></i> Amount</span>
+          <span class="cal-detail-val" id="cal-modal-amount" style="color:#34d399; font-weight:700; font-size:14px;">-</span>
+        </div>
+        <div class="cal-detail-item">
+          <span class="cal-detail-label"><i class="fa-solid fa-circle-check" style="color:#38bdf8;"></i> Status</span>
+          <span class="cal-detail-val" id="cal-modal-status">-</span>
+        </div>
+        <div class="cal-detail-item" id="cal-modal-location-row" style="display:none; grid-column: span 2;">
+          <span class="cal-detail-label"><i class="fa-solid fa-location-dot" style="color:#f43f5e;"></i> Location / Venue</span>
+          <span class="cal-detail-val" id="cal-modal-location">-</span>
+        </div>
+      </div>
+      <div class="cal-detail-item" style="display:flex; flex-direction:column; gap:6px;">
+        <span class="cal-detail-label"><i class="fa-solid fa-align-left" style="color:var(--any-text-muted);"></i> Description & Notes</span>
+        <div id="cal-modal-desc" style="font-size:13px; color:var(--any-text); background:#1a1a1a; padding:12px; border-radius:8px; border:1px solid var(--any-border); min-height:48px; line-height:1.5;">No description provided.</div>
+      </div>
+    </div>
+    <div class="any-modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+      <button type="button" class="btn-any-subtle" onclick="closeModal('modal-calendar-item-detail')">Close</button>
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-any-green" id="cal-modal-pay-btn" style="display:none; padding:7px 16px; font-size:12.5px;"><i class="fa-solid fa-check"></i> Mark Paid</button>
+        <button type="button" class="btn-any-blue" id="cal-modal-inspect-btn" style="padding:7px 16px; font-size:12.5px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Inspect</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Delete Account Confirmation -->
+<div class="any-modal-overlay" id="modal-delete-account">
+  <div class="any-modal-card" style="max-width: 460px; border: 1px solid rgba(239, 68, 68, 0.4);">
+    <div class="any-modal-header" style="border-bottom: 1px solid rgba(239, 68, 68, 0.2);">
+      <h3 style="color: #ef4444; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-triangle-exclamation"></i> Delete Account Confirmation
+      </h3>
+      <button class="any-modal-close" onclick="closeModal('modal-delete-account')">&times;</button>
+    </div>
+    <div class="any-modal-body">
+      <p style="font-size: 13.5px; color: var(--any-text); line-height: 1.5; margin-bottom: 14px;">
+        Are you sure you want to permanently delete your TrackDue account?
+      </p>
+      <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px;">
+        <ul style="font-size: 12.5px; color: #fca5a5; padding-left: 18px; margin: 0; line-height: 1.6;">
+          <li>All your personal bills, events, and reminders will be erased.</li>
+          <li>Your profile and login credentials will be removed.</li>
+          <li>You will be signed out immediately and cannot recover this account.</li>
+        </ul>
+      </div>
+      <p style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 8px;">
+        Type <strong style="color: #fff; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">DELETE</strong> below to confirm:
+      </p>
+      <input type="text" class="any-input-field" id="input-confirm-delete-keyword" placeholder="DELETE" style="width: 100%; border-color: rgba(239,68,68,0.4);" oninput="checkDeleteConfirmationInput()">
+    </div>
+    <div class="any-modal-footer">
+      <button type="button" class="btn-any-subtle" onclick="closeModal('modal-delete-account')">Cancel</button>
+      <button type="button" class="btn-danger-delete" id="btn-confirm-delete-account" disabled onclick="executeAccountDeletion()">
+        <i class="fa-solid fa-trash-can"></i> Permanently Delete Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Admin Broadcast System Announcement -->
+<div class="any-modal-overlay" id="modal-admin-broadcast">
+  <div class="any-modal-card" style="max-width: 540px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(59,130,246,0.15); display:flex; align-items:center; justify-content:center; color:#3b82f6;">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Broadcast System Announcement</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);">Dispatches an in-app alert to all registered users</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-admin-broadcast')">&times;</button>
+    </div>
+    <form id="form-admin-broadcast" onsubmit="handleAdminBroadcastSubmit(event)">
+      <div class="any-modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Announcement Title *</label>
+          <input type="text" class="any-input-field" id="broadcast-title" required placeholder="e.g. Scheduled System Maintenance Notice" style="width:100%;">
+        </div>
+
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Notification Message *</label>
+          <textarea class="any-input-field" id="broadcast-message" rows="4" required placeholder="Enter the announcement message to broadcast..." style="width:100%; line-height:1.5; resize:vertical;"></textarea>
+          <small style="color:var(--any-text-muted); font-size:11px; margin-top:4px; display:block;">
+            <i class="fa-solid fa-users" style="color:#38bdf8;"></i> This notification will appear as an in-app alert in every user's notification center.
+          </small>
+        </div>
+
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Target Channel</label>
+          <input type="text" class="any-input-field" value="In-App Notification (All Active Users)" readonly disabled style="width:100%; opacity:0.75; cursor:not-allowed;">
+        </div>
+      </div>
+      <div class="any-modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-admin-broadcast')">Cancel</button>
+        <button type="submit" class="btn-any-blue" id="btn-submit-broadcast" style="background:#3b82f6;">
+          <i class="fa-solid fa-bullhorn"></i> Broadcast to All Users
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Admin Global Notification Templates -->
+<div class="any-modal-overlay" id="modal-admin-templates">
+  <div class="any-modal-card" style="max-width: 620px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(168,85,247,0.15); display:flex; align-items:center; justify-content:center; color:#c084fc;">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Global Reminder Notification Templates</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);">Defines the automated alert message format for all users</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-admin-templates')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="display:flex; flex-direction:column; gap:20px; max-height:75vh; overflow-y:auto;">
+      
+      <!-- TAB TOGGLE: BILL vs EVENT -->
+      <div class="rem-segmented-nav" style="width:100%;">
+        <button type="button" class="rem-seg-btn active" id="btn-admin-tpl-bill" onclick="switchAdminTemplateTab('BILL')" style="flex:1;">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i> Bill Reminder Format
+        </button>
+        <button type="button" class="rem-seg-btn" id="btn-admin-tpl-event" onclick="switchAdminTemplateTab('EVENT')" style="flex:1;">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i> Event Reminder Format
+        </button>
+      </div>
+
+      <!-- BILL FORMAT SECTION -->
+      <form id="form-admin-tpl-bill" onsubmit="handleAdminSaveTemplate(event, 'BILL')">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:#a7f3d0;">
+            <i class="fa-solid fa-info-circle"></i> Available placeholders:
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{billName}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{amount}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{dueDate}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{category}</span>
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Title Format *</label>
+            <input type="text" class="any-input-field" id="admin-bill-title-tpl" required style="width:100%;">
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Message Format *</label>
+            <textarea class="any-input-field" id="admin-bill-msg-tpl" rows="4" required style="width:100%; line-height:1.5; resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn-any-blue" style="background:#10b981;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Global Bill Format
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- EVENT FORMAT SECTION -->
+      <form id="form-admin-tpl-event" onsubmit="handleAdminSaveTemplate(event, 'EVENT')" style="display:none;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="background:rgba(14,165,233,0.08); border:1px solid rgba(14,165,233,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:#bae6fd;">
+            <i class="fa-solid fa-info-circle"></i> Available placeholders:
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventName}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventDate}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventTime}</span>
+            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{location}</span>
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Title Format *</label>
+            <input type="text" class="any-input-field" id="admin-event-title-tpl" required style="width:100%;">
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Message Format *</label>
+            <textarea class="any-input-field" id="admin-event-msg-tpl" rows="4" required style="width:100%; line-height:1.5; resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn-any-blue" style="background:#0ea5e9;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Global Event Format
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="any-modal-footer">
+      <button type="button" class="btn-any-subtle" onclick="closeModal('modal-admin-templates')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: User Customize Personal Reminder Message Formats -->
+<div class="any-modal-overlay" id="modal-user-notification-templates">
+  <div class="any-modal-card" style="max-width: 620px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(139,92,246,0.15); display:flex; align-items:center; justify-content:center; color:#a78bfa;">
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Customize Reminder Message Format</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);">Customize the automated message format received by your account</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-user-notification-templates')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="display:flex; flex-direction:column; gap:20px; max-height:75vh; overflow-y:auto;">
+      
+      <!-- TAB TOGGLE: BILL vs EVENT -->
+      <div class="rem-segmented-nav" style="width:100%;">
+        <button type="button" class="rem-seg-btn active" id="btn-user-tpl-bill" onclick="switchUserTemplateTab('BILL')" style="flex:1;">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i> My Bill Format
+        </button>
+        <button type="button" class="rem-seg-btn" id="btn-user-tpl-event" onclick="switchUserTemplateTab('EVENT')" style="flex:1;">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i> My Event Format
+        </button>
+      </div>
+
+      <!-- USER BILL FORMAT -->
+      <form id="form-user-tpl-bill" onsubmit="handleUserSaveTemplate(event, 'BILL')">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#a7f3d0; font-weight:600;"><i class="fa-solid fa-tag"></i> Placeholders:</span>
+            <button type="button" class="btn-any-subtle" onclick="resetUserTemplateToDefault('BILL')" style="padding:3px 10px; font-size:11px; color:#f87171;">
+              <i class="fa-solid fa-rotate-left"></i> Reset to System Default
+            </button>
+          </div>
+          <div style="font-size:11.5px; color:var(--any-text-muted);">
+            <span style="background:#222; padding:2px 6px; border-radius:4px; font-family:monospace; color:#38bdf8;">{billName}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{amount}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{dueDate}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{category}</span>
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Notification Title Format *</label>
+            <input type="text" class="any-input-field" id="user-bill-title-tpl" required style="width:100%;">
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Notification Message Format *</label>
+            <textarea class="any-input-field" id="user-bill-msg-tpl" rows="4" required style="width:100%; line-height:1.5; resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn-any-blue" style="background:#10b981;">
+              <i class="fa-solid fa-floppy-disk"></i> Save My Bill Format
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- USER EVENT FORMAT -->
+      <form id="form-user-tpl-event" onsubmit="handleUserSaveTemplate(event, 'EVENT')" style="display:none;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#bae6fd; font-weight:600;"><i class="fa-solid fa-tag"></i> Placeholders:</span>
+            <button type="button" class="btn-any-subtle" onclick="resetUserTemplateToDefault('EVENT')" style="padding:3px 10px; font-size:11px; color:#f87171;">
+              <i class="fa-solid fa-rotate-left"></i> Reset to System Default
+            </button>
+          </div>
+          <div style="font-size:11.5px; color:var(--any-text-muted);">
+            <span style="background:#222; padding:2px 6px; border-radius:4px; font-family:monospace; color:#38bdf8;">{eventName}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{eventDate}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{eventTime}</span>
+            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{location}</span>
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Notification Title Format *</label>
+            <input type="text" class="any-input-field" id="user-event-title-tpl" required style="width:100%;">
+          </div>
+
+          <div class="any-form-group">
+            <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Notification Message Format *</label>
+            <textarea class="any-input-field" id="user-event-msg-tpl" rows="4" required style="width:100%; line-height:1.5; resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn-any-blue" style="background:#0ea5e9;">
+              <i class="fa-solid fa-floppy-disk"></i> Save My Event Format
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="any-modal-footer">
+      <button type="button" class="btn-any-subtle" onclick="closeModal('modal-user-notification-templates')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: View Bill Payment Receipt Lightbox -->
+<div class="any-modal-overlay" id="modal-receipt-view">
+  <div class="any-modal-card" style="max-width: 680px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(16,185,129,0.15); display:flex; align-items:center; justify-content:center; color:#34d399;">
+          <i class="fa-solid fa-receipt"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;" id="receipt-view-title">Payment Receipt</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);" id="receipt-view-sub">Verified Payment Proof</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-receipt-view')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="padding:16px 20px;">
+      <!-- Receipt Summary Pill -->
+      <div id="receipt-view-meta-bar" style="display:flex; justify-content:space-between; align-items:center; background:#181818; padding:10px 14px; border-radius:8px; border:1px solid var(--any-border); margin-bottom:14px;">
+        <div>
+          <span style="font-size:11px; color:var(--any-text-muted); display:block;">Bill / Obligation:</span>
+          <strong style="font-size:13.5px; color:#fff;" id="receipt-view-bill-name">-</strong>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:11px; color:var(--any-text-muted); display:block;">Settled Amount:</span>
+          <strong style="font-size:14px; color:#10b981;" id="receipt-view-amount">LKR 0.00</strong>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:11px; color:var(--any-text-muted); display:block;">Paid Date:</span>
+          <span style="font-size:12px; color:#93c5fd;" id="receipt-view-paid-date">-</span>
+        </div>
+      </div>
+
+      <!-- Receipt Preview Container -->
+      <div id="receipt-view-content" style="display:flex; align-items:center; justify-content:center; background:#111; border-radius:8px; border:1px solid rgba(255,255,255,0.06); padding:16px; min-height:280px; max-height:60vh; overflow:auto;">
+        <img id="receipt-view-img" src="" alt="Payment Receipt" style="max-width:100%; max-height:55vh; object-fit:contain; border-radius:6px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        <div id="receipt-view-doc-frame" style="display:none; width:100%; height:450px;"></div>
+      </div>
+    </div>
+    <div class="any-modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <button type="button" class="btn-any-subtle" id="btn-receipt-replace" onclick="handleReceiptReplaceClick()" style="font-size:12px;">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Replace Receipt
+        </button>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-any-subtle" onclick="downloadReceiptFile()">
+          <i class="fa-solid fa-download"></i> Download
+        </button>
+        <button type="button" class="btn-any-subtle" onclick="printReceiptFile()">
+          <i class="fa-solid fa-print"></i> Print
+        </button>
+        <button type="button" class="btn-any-blue" onclick="closeModal('modal-receipt-view')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Upload Receipt to Bill -->
+<div class="any-modal-overlay" id="modal-receipt-upload">
+  <div class="any-modal-card" style="max-width: 520px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(59,130,246,0.15); display:flex; align-items:center; justify-content:center; color:#60a5fa;">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Upload Payment Receipt</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);" id="upload-receipt-bill-sub">Attach proof of payment</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-receipt-upload')">&times;</button>
+    </div>
+    <form id="form-upload-receipt" onsubmit="handleReceiptUploadSubmit(event)">
+      <div class="any-modal-body">
+        <input type="hidden" id="upload-receipt-bill-id">
+        <input type="hidden" id="upload-receipt-data-url">
+
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--any-border); border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:11px; color:var(--any-text-muted); display:block;">Target Bill:</span>
+            <strong style="color:#fff; font-size:13px;" id="upload-receipt-bill-name">-</strong>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11px; color:var(--any-text-muted); display:block;">Amount:</span>
+            <strong style="color:#10b981; font-size:13px;" id="upload-receipt-bill-amount">LKR 0.00</strong>
+          </div>
+        </div>
+
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Settlement / Paid Date</label>
+          <input type="date" class="any-input-field" id="upload-receipt-paid-date" style="width:100%;">
+        </div>
+
+        <!-- Dropzone Box -->
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Receipt File (Image or Document)</label>
+          <div id="receipt-dropzone-box" style="border:2px dashed rgba(255,255,255,0.15); border-radius:8px; padding:24px 16px; text-align:center; background:#181818; cursor:pointer; transition:var(--transition);" onclick="document.getElementById('receipt-file-input').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:28px; color:#60a5fa; margin-bottom:8px; display:block;"></i>
+            <div style="font-size:13px; font-weight:600; color:#fff; margin-bottom:4px;">Click to browse or drop receipt file here</div>
+            <div style="font-size:11px; color:var(--any-text-muted);">Supports PNG, JPG, JPEG, WebP, PDF images</div>
+            <input type="file" id="receipt-file-input" accept="image/*" style="display:none;" onchange="handleReceiptFileSelect(event)">
+          </div>
+        </div>
+
+        <!-- Upload Preview Container -->
+        <div id="receipt-upload-preview-container" style="display:none; margin-top:12px; text-align:center; background:#121212; padding:12px; border-radius:8px; border:1px solid var(--any-border);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:11.5px; color:#a7f3d0;"><i class="fa-solid fa-check"></i> File selected</span>
+            <button type="button" class="btn-any-subtle" onclick="clearReceiptUploadSelection()" style="padding:2px 8px; font-size:11px; color:#ef4444;"><i class="fa-solid fa-xmark"></i> Remove</button>
+          </div>
+          <img id="receipt-upload-preview-img" src="" alt="Preview" style="max-height:160px; max-width:100%; object-fit:contain; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-receipt-upload')">Cancel</button>
+        <button type="submit" class="btn-any-blue" id="btn-save-receipt-submit" style="background:#10b981;">
+          <i class="fa-solid fa-check"></i> Save & Attach Receipt
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Settle / Pay Bill with Optional Receipt -->
+<div class="any-modal-overlay" id="modal-bill-pay">
+  <div class="any-modal-card" style="max-width: 500px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:8px; background:rgba(16,185,129,0.15); display:flex; align-items:center; justify-content:center; color:#34d399;">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Mark Bill as Paid</h3>
+          <span style="font-size:11.5px; color:var(--any-text-muted);">Record bill settlement and upload proof</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-bill-pay')">&times;</button>
+    </div>
+    <form id="form-bill-pay" onsubmit="handleBillPaySubmit(event)">
+      <div class="any-modal-body">
+        <input type="hidden" id="pay-bill-id">
+        <input type="hidden" id="pay-receipt-data-url">
+
+        <div style="background:#181818; border:1px solid var(--any-border); border-radius:8px; padding:12px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:11px; color:var(--any-text-muted); display:block;">Bill Title:</span>
+            <strong style="color:#fff; font-size:13.5px;" id="pay-bill-name">-</strong>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11px; color:var(--any-text-muted); display:block;">Settlement Amount:</span>
+            <strong style="color:#10b981; font-size:14px;" id="pay-bill-amount">LKR 0.00</strong>
+          </div>
+        </div>
+
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Payment Date *</label>
+          <input type="date" class="any-input-field" id="pay-bill-date" required style="width:100%;">
+        </div>
+
+        <div class="any-form-group">
+          <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Attach Receipt (Optional)</label>
+          <div id="pay-dropzone-box" style="border:2px dashed rgba(255,255,255,0.15); border-radius:8px; padding:18px 14px; text-align:center; background:#141414; cursor:pointer;" onclick="document.getElementById('pay-receipt-file-input').click()">
+            <i class="fa-solid fa-receipt" style="font-size:22px; color:#34d399; margin-bottom:6px; display:block;"></i>
+            <div style="font-size:12px; font-weight:600; color:#fff;">Click to attach payment receipt</div>
+            <div style="font-size:10.5px; color:var(--any-text-muted);">Attach receipt photo or snapshot</div>
+            <input type="file" id="pay-receipt-file-input" accept="image/*" style="display:none;" onchange="handlePayReceiptFileSelect(event)">
+          </div>
+          <div id="pay-receipt-preview-container" style="display:none; margin-top:10px; text-align:center; background:#121212; padding:8px; border-radius:6px; border:1px solid var(--any-border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:11px; color:#a7f3d0;"><i class="fa-solid fa-check"></i> Receipt attached</span>
+              <button type="button" class="btn-any-subtle" onclick="clearPayReceiptSelection()" style="padding:2px 6px; font-size:10px; color:#ef4444;"><i class="fa-solid fa-xmark"></i> Remove</button>
+            </div>
+            <img id="pay-receipt-preview-img" src="" alt="Preview" style="max-height:120px; max-width:100%; object-fit:contain; border-radius:4px;">
+          </div>
+        </div>
+      </div>
+      <div class="any-modal-footer">
+        <button type="button" class="btn-any-subtle" onclick="closeModal('modal-bill-pay')">Cancel</button>
+        <button type="submit" class="btn-any-blue" style="background:#10b981;">
+          <i class="fa-solid fa-check-double"></i> Confirm Payment Settlement
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../services/api.js"></script>
+<script src="../components/modal.js"></script>
+<script src="../components/sidebar.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

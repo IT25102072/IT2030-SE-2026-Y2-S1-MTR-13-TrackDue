@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackDue | Enterprise Bill & Event Reminder System</title>
+  <meta name="description" content="Centralized, automated web-based organizational Bill and Event Reminder System with smart scheduling, overdue tracking, and enterprise auditing.">
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/landing.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- ================= Navigation Bar ================= -->
+  <nav class="navbar">
+    <a href="#" class="nav-brand">
+      <div class="brand-logo-wrap">
+        <img src="../assets/img/logo.png" alt="TrackDue Logo" class="nav-brand-img">
+      </div>
+      <div style="display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="brand-title">TrackDue</span>
+          <span class="brand-tag">v2.0</span>
+        </div>
+        <span style="font-size:10px; color:var(--text-dim); font-weight:600; letter-spacing:0.3px;">Never Miss What Matters</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="#preview" class="nav-link">Workspace Demo</a></li>
+      <li><a href="#reports" class="nav-link">Reports & History</a></li>
+      <li><a href="#stats" class="nav-link">Platform Stats</a></li>
+    </ul>
+
+    <div class="nav-actions" id="nav-actions">
+      <button class="btn-nav-login" onclick="openAuthModal('login')">
+        <i class="fa-regular fa-user"></i>
+        <span>Sign In</span>
+      </button>
+      <button class="btn-nav-cta" onclick="openAuthModal('register')">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Get Started</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ================= Hero Section ================= -->
+  <header class="hero">
+    <!-- Official TrackDue Brand Emblem Showcase -->
+    <div class="hero-brand-showcase">
+      <div class="hero-brand-glow"></div>
+      <div class="hero-brand-card">
+        <img src="../assets/img/logo.png" alt="TrackDue - Never Miss What Matters" class="hero-brand-img">
+      </div>
+      <div class="hero-brand-badge-row">
+        <span class="brand-feature-pill"><i class="fa-solid fa-file-invoice-dollar"></i> Bills & Invoices</span>
+        <span class="brand-feature-pill"><i class="fa-solid fa-calendar-check"></i> Events & Schedules</span>
+        <span class="brand-feature-pill"><i class="fa-solid fa-bell"></i> Smart Reminders</span>
+      </div>
+    </div>
+
+    <div class="hero-pill">
+      <i class="fa-solid fa-bolt" style="color:#60a5fa;"></i>
+      <span>Next-Gen Enterprise Deadline & Financial Oversight</span>
+    </div>
+
+    <h1 class="hero-title">
+      Never Miss a Corporate <br>
+      <span class="highlight">Deadline or Due Bill</span> Again.
+    </h1>
+
+    <p class="hero-subtitle">
+      TrackDue centralizes financial bills, audits, reminders, overdue reports, and support tickets in one seamless, high-performance web dashboard.
+    </p>
+
+    <div class="hero-buttons" id="hero-buttons">
+      <button class="btn-hero-primary" onclick="openAuthModal('register')">
+        <i class="fa-solid fa-rocket"></i>
+        <span>Create Free Account</span>
+      </button>
+      <button class="btn-hero-secondary" onclick="openAuthModal('login')">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        <span>Sign In to Workspace</span>
+      </button>
+    </div>
+
+    <!-- Interactive Workspace Preview Card -->
+    <div class="hero-preview-wrapper" id="preview">
+      <div class="hero-preview-window">
+        <!-- Topbar Window Chrome -->
+        <div class="preview-topbar">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <div class="preview-address-bar">
+            <i class="fa-solid fa-lock" style="font-size:10px; color:#10b981;"></i>
+            <span>https://app.trackdue.com/workspace</span>
+          </div>
+          <div style="font-size:12px; color:var(--text-dim); display:flex; gap:10px;">
+            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-gear"></i>
+          </div>
+        </div>
+
+        <!-- Preview Body Layout -->
+        <div class="preview-content">
+          <!-- Mini Sidebar -->
+          <div class="preview-sidebar">
+            <div class="preview-sidebar-item active">
+              <i class="fa-solid fa-circle-dot" style="color:#3b82f6;"></i>
+              <span>My Day Overview</span>
+            </div>
+            <div class="preview-sidebar-item">
+              <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
+              <span>Bills & Finance</span>
+            </div>
+            <div class="preview-sidebar-item">
+              <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
+              <span>Events & Audits</span>
+            </div>
+            <div class="preview-sidebar-item">
+              <i class="fa-solid fa-chart-column" style="color:#8b5cf6;"></i>
+              <span>Reports & Overdue</span>
+            </div>
+            <div class="preview-sidebar-item">
+              <i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i>
+              <span>Activity History</span>
+            </div>
+            <div class="preview-sidebar-item">
+              <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
+              <span>Support Requests</span>
+            </div>
+          </div>
+
+          <!-- Mini Main Workspace -->
+          <div class="preview-main-body">
+            <div class="preview-kpi-row">
+              <div class="preview-kpi-card">
+                <div class="val" style="color:#60a5fa;">$164,250</div>
+                <div class="lbl">Active Corporate Bills</div>
+              </div>
+              <div class="preview-kpi-card">
+                <div class="val" style="color:#f87171;">3 Overdue</div>
+                <div class="lbl">Immediate Escalation</div>
+              </div>
+              <div class="preview-kpi-card">
+                <div class="val" style="color:#34d399;">8 Events</div>
+                <div class="lbl">Scheduled This Month</div>
+              </div>
+            </div>
+
+            <!-- Table Card Preview -->
+            <div class="preview-table-card">
+              <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px; display:flex; justify-content:space-between;">
+                <span>Recent High-Priority Financial Deadlines</span>
+                <span style="font-size:11px; color:#3b82f6; cursor:pointer;" onclick="openAuthModal('login')">View in App &rarr;</span>
+              </div>
+              <div class="mock-row">
+                <div>
+                  <strong>AWS Cloud Infrastructure Bill</strong>
+                  <div style="font-size:11px; color:var(--text-dim);">Due: 2026-09-18 • Cloud Services</div>
+                </div>
+                <div>
+                  <span class="mock-badge overdue">PENDING</span>
+                  <span style="font-weight:700; margin-left:10px;">$4,200.00</span>
+                </div>
+              </div>
+              <div class="mock-row">
+                <div>
+                  <strong>Headquarters Commercial Rent</strong>
+                  <div style="font-size:11px; color:var(--text-dim);">Due: 2026-09-01 • Facilities</div>
+                </div>
+                <div>
+                  <span class="mock-badge overdue">OVERDUE</span>
+                  <span style="font-weight:700; margin-left:10px;">$12,500.00</span>
+                </div>
+              </div>
+              <div class="mock-row">
+                <div>
+                  <strong>Corporate Legal Retainer Fee</strong>
+                  <div style="font-size:11px; color:var(--text-dim);">Settled: 2026-08-30 • Legal Operations</div>
+                </div>
+                <div>
+                  <span class="mock-badge paid">PAID</span>
+                  <span style="font-weight:700; margin-left:10px;">$8,000.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= Stats Counter ================= -->
+  <section class="stats-section" id="stats">
+    <div class="stat-box">
+      <div class="number">Cloud</div>
+      <div class="label">Centralized System</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">100%</div>
+      <div class="label">Automated Overdue Detection</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">Real-Time</div>
+      <div class="label">Activity Audit Logging</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">Enterprise</div>
+      <div class="label">Spring Boot 3 + JPA Engine</div>
+    </div>
+  </section>
+
+  <!-- ================= Features Grid ================= -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <span class="section-tag">Core Capabilities</span>
+      <h2 class="section-title">Built for Complex Organizations</h2>
+      <p class="section-desc">TrackDue delivers a robust enterprise architecture that connects departments, schedules, and stakeholders.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+        </div>
+        <h3>Financial Bill Tracking</h3>
+        <p>Comprehensive bill lifecycle management with automatic overdue computation, category breakdown, and settlement records.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <h3>Corporate Event Deadlines</h3>
+        <p>Schedule executive meetings, compliance audits, project milestones, and critical departmental deadlines with instant status updates.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-regular fa-bell"></i>
+        </div>
+        <h3>Multi-Channel Reminders</h3>
+        <p>Intelligent reminder triggers tied directly to bills and events with support for recurring notification simulations across email and SMS.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-solid fa-chart-column"></i>
+        </div>
+        <h3>Dynamic Executive Reports</h3>
+        <p>Generate overdue analysis, monthly financial summaries, and operational KPI reports with 1-click CSV and PDF export capabilities.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h3>Tamper-Proof Activity Audit</h3>
+        <p>Every creation, update, role alteration, and status transition is recorded in an immutable chronological activity history log.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card">
+        <div class="feature-icon-box">
+          <i class="fa-solid fa-headset"></i>
+        </div>
+        <h3>Support & Feedback Loops</h3>
+        <p>Empower employees with dedicated support ticketing, admin resolution workflows, and 5-star user satisfaction review tracking.</p>
+      </div>
+    </div>
+
+    <!-- ================= Feature Spotlight ================= -->
+    <div class="uc06-spotlight" id="reports">
+      <div class="uc06-info">
+        <h3>
+          <span>Enterprise Reporting, History & Support</span>
+          <span class="uc06-tag">Integrated Tools</span>
+        </h3>
+        <p>
+          Automated overdue escalation, dynamic report engines (Overdue, Monthly Bills, Events, Executive KPIs), browser-printable PDF & CSV data export, audited action tracing, user support ticketing, and satisfaction review ratings.
+        </p>
+      </div>
+      <div class="uc06-actions">
+        <button class="btn-hero-primary" style="padding:12px 24px; font-size:14px; width:100%; justify-content:center;" onclick="openAuthModal('login')">
+          <i class="fa-solid fa-laptop-code"></i>
+          <span>Explore Workspace</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Call to Action ================= -->
+  <section class="cta-section">
+    <div class="cta-card">
+      <h2>Ready to Experience TrackDue?</h2>
+      <p>Sign in with your account or create a new account to organize all your bills, events, and schedules.</p>
+      <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <button class="btn-hero-primary" onclick="openAuthModal('register')">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Create an Account</span>
+        </button>
+        <button class="btn-hero-secondary" onclick="openAuthModal('login')">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          <span>Sign In</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Footer ================= -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="brand-logo-wrap" style="width:36px; height:36px; border-radius:10px;">
+          <img src="../assets/img/logo.png" alt="TrackDue Logo" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div>
+          <span style="font-size:17px; font-weight:800; color:#fff;">TrackDue Enterprise</span>
+          <div style="font-size:11px; color:var(--text-dim);">Never Miss What Matters</div>
+        </div>
+      </div>
+      <div class="footer-credits">
+        TrackDue Centralized Reminder & Management System
+      </div>
+    </div>
+    <div style="max-width:1280px; margin:20px auto 0; text-align:center; font-size:12px; color:var(--text-dim);">
+      &copy; 2026 TrackDue Enterprise Reminder System. Built with Spring Boot 3 & Modern Glassmorphic Web Architecture.
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       Authentication Modal (Sign In & Sign Up)
+       ========================================================================== -->
+  <div class="auth-modal-backdrop" id="auth-modal">
+    <div class="auth-card">
+      <div class="auth-card-header" style="flex-direction:column; align-items:center; text-align:center; position:relative; padding-top:20px;">
+        <button class="auth-close-btn" onclick="closeAuthModal()" title="Close" style="position:absolute; right:16px; top:16px;">&times;</button>
+        <div style="width:68px; height:68px; border-radius:18px; overflow:hidden; background:#ffffff; box-shadow:0 8px 24px rgba(37,99,235,0.35); border:1px solid rgba(255,255,255,0.2); margin-bottom:12px;">
+          <img src="../assets/img/logo.png" alt="TrackDue Logo" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <h3 class="auth-card-title" id="auth-modal-title" style="margin:0;">Sign in to TrackDue</h3>
+        <span style="font-size:11px; color:var(--text-dim); margin-top:3px;">Never Miss What Matters</span>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tab-btn-login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab-btn" id="tab-btn-register" onclick="switchAuthTab('register')">Create Account</button>
+      </div>
+
+      <!-- Pane 1: Sign In Form -->
+      <div class="auth-form-pane active" id="pane-login">
+        <form id="form-login">
+          <div class="auth-field-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" placeholder="e.g. admin@trackdue.com" required autocomplete="username">
+          </div>
+
+          <div class="auth-field-group">
+            <label for="login-password">Password</label>
+            <div style="position:relative;">
+              <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password" style="padding-right:42px;">
+              <button type="button" class="pwd-toggle-btn" onclick="toggleAuthPassword('login-password', this)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:14px;"><i class="fa-regular fa-eye"></i></button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="btn-login-submit" style="margin-top: 18px;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span>Sign In to Workspace</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Pane 2: Register Form -->
+      <div class="auth-form-pane" id="pane-register">
+        <form id="form-register">
+          <div class="auth-field-row">
+            <div class="auth-field-group">
+              <label for="reg-firstname">First Name *</label>
+              <input type="text" id="reg-firstname" placeholder="First Name" required>
+            </div>
+            <div class="auth-field-group">
+              <label for="reg-lastname">Last Name *</label>
+              <input type="text" id="reg-lastname" placeholder="Last Name" required>
+            </div>
+          </div>
+
+          <div class="auth-field-group">
+            <label for="reg-email">Email Address *</label>
+            <input type="email" id="reg-email" placeholder="name@example.com" required>
+          </div>
+
+          <div class="auth-field-group">
+            <label for="reg-phone">Phone Number</label>
+            <input type="tel" id="reg-phone" placeholder="+94 7X XXX XXXX">
+          </div>
+
+          <div class="auth-field-row">
+            <div class="auth-field-group">
+              <label for="reg-password">Password *</label>
+              <div style="position:relative;">
+                <input type="password" id="reg-password" placeholder="Min. 5 characters" required minlength="5" style="padding-right:42px;">
+                <button type="button" class="pwd-toggle-btn" onclick="toggleAuthPassword('reg-password', this)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:14px;"><i class="fa-regular fa-eye"></i></button>
+              </div>
+            </div>
+            <div class="auth-field-group">
+              <label for="reg-confirm-password">Confirm Password *</label>
+              <div style="position:relative;">
+                <input type="password" id="reg-confirm-password" placeholder="Repeat password" required minlength="5" style="padding-right:42px;">
+                <button type="button" class="pwd-toggle-btn" onclick="toggleAuthPassword('reg-confirm-password', this)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:14px;"><i class="fa-regular fa-eye"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="btn-register-submit">
+            <i class="fa-solid fa-user-check"></i>
+            <span>Register & Enter Workspace</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="landing-toast-container" id="landing-toast-container"></div>
+
+  <script src="../services/api.js"></script>
+  <script src="../components/modal.js"></script>
+  <script src="../assets/js/landing.js"></script>
+</body>
+</html>
