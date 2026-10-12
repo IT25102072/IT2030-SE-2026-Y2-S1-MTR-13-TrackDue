@@ -11,6 +11,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="../assets/css/landing.css">
+  <script>
+    (function() {
+      const mode = localStorage.getItem('trackdue_theme_mode') || 'system';
+      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const effective = mode === 'system' ? (isSystemDark ? 'dark' : 'light') : mode;
+      document.documentElement.setAttribute('data-theme', effective);
+      document.documentElement.setAttribute('data-theme-mode', mode);
+      document.documentElement.style.colorScheme = effective;
+    })();
+  </script>
+  <script src="../assets/js/theme.js"></script>
 </head>
 <body>
 
@@ -41,6 +52,12 @@
     </ul>
 
     <div class="nav-actions" id="nav-actions">
+      <!-- Theme Switcher Button -->
+      <button class="btn-nav-theme" id="theme-toggle-btn" onclick="TrackDueTheme.cycleTheme()" title="Theme: SYSTEM (Click to change)">
+        <i id="theme-toggle-icon" class="fa-solid fa-circle-half-stroke"></i>
+        <span id="theme-toggle-text">System</span>
+      </button>
+
       <button class="btn-nav-login" onclick="openAuthModal('login')">
         <i class="fa-regular fa-user"></i>
         <span>Sign In</span>
@@ -370,7 +387,7 @@
         <form id="form-login">
           <div class="auth-field-group">
             <label for="login-email">Email Address</label>
-            <input type="email" id="login-email" placeholder="e.g. admin@trackdue.com" required autocomplete="username">
+            <input type="email" id="login-email" placeholder="e.g. user@trackdue.com" required autocomplete="username">
           </div>
 
           <div class="auth-field-group">

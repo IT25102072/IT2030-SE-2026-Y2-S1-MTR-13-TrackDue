@@ -1,43 +1,36 @@
-# MEMBER 3: Manikkaarachchi M.A.D.N.H. (IT25102067)
-**Major Function 6.3:** Event Management
-**Branch Name:** eature/event-management-it25102067
+﻿# TrackDue - Member Contribution & Viva Guide
 
-## Backend Files in this Folder:
-- ackend/src/main/java/com/trackdue/entity/Event.java
-- ackend/src/main/java/com/trackdue/repository/EventRepository.java
-- ackend/src/main/java/com/trackdue/service/EventService.java
-- ackend/src/main/java/com/trackdue/controller/EventController.java
+This repository contains the collective contribution of all 6 team members. Individual member viva guides are located in the `docs/` folder:
 
-## Frontend Files & Sections:
-- rontend/pages/app.html (Events section #view-events, Calendar view container, Event Modal #modal-event)
-- rontend/assets/js/app.js (Functions: loadEvents(), 
-enderEvents(), saveEvent(), editEvent(), deleteEvent(), 
-enderCalendar())
-- rontend/services/api.js (API endpoints: /api/events, /api/events/{id})
+- [Member 1: User Account Management (IT25102070)](docs/MEMBER_1_IT25102070_GUIDE.md)
+- [Member 2: Bill Management (IT25102072)](docs/MEMBER_2_IT25102072_GUIDE.md)
+- [Member 3: Event Management (IT25102067)](docs/MEMBER_3_IT25102067_GUIDE.md)
+- [Member 4: Reminder Scheduling (IT25102080)](docs/MEMBER_4_IT25102080_GUIDE.md)
+- [Member 5: Notification Management (IT25102077)](docs/MEMBER_5_IT25102077_GUIDE.md)
+- [Member 6: Reports, History & Support (IT25102069)](docs/MEMBER_6_IT25102069_GUIDE.md)
 
-## CRUD Operations to Explain at Viva:
-- **Create:** Creating new corporate/personal events with date, location, priority.
-- **Read:** Listing upcoming events and rendering interactive month calendar view.
-- **Update:** Rescheduling events, modifying venue/attendees/notes.
-- **Delete:** Removing cancelled events from system.
-# MEMBER 2: Rathnayake R.M.C.S. (IT25102072)
-**Major Function 6.2:** Bill Management
-**Branch Name:** eature/bill-management-it25102072
+---
 
-## Backend Files in this Folder:
-- ackend/src/main/java/com/trackdue/entity/Bill.java
-- ackend/src/main/java/com/trackdue/repository/BillRepository.java
-- ackend/src/main/java/com/trackdue/service/BillService.java
-- ackend/src/main/java/com/trackdue/controller/BillController.java
+### Member 1: IT25102070 - User Account Management
+- **Key Modules:** User entity, UserRepository, UserService, UserController, AuthController, SecurityConfig
+- **Frontend:** Landing authentication modal, sign-in/sign-up scripts
 
-## Frontend Files & Sections:
-- rontend/pages/app.html (Bills section #view-bills, Bill Add/Edit Modal #modal-bill, Payment settlement modal)
-- rontend/assets/js/app.js (Functions: loadBills(), 
-enderBills(), saveBill(), editBill(), deleteBill(), settleBillPayment())
-- rontend/services/api.js (API endpoints: /api/bills, /api/bills/{id}, /api/bills/category/{category})
+### Member 2: IT25102072 - Bill Management
+- **Key Modules:** Bill entity, BillRepository, BillService, BillController
+- **Frontend:** Bills section, Add/Edit modal, Payment settlement
 
-## CRUD Operations to Explain at Viva:
-- **Create:** Adding a new bill with amount, category, recurrence, due date.
-- **Read:** Viewing bill cards/table, overdue status badges, category filters.
-- **Update:** Editing bill details, changing amount, marking bill as Paid/Settled.
-- **Delete:** Deleting obsolete or cancelled bills.
+### Member 3: IT25102067 - Event Management
+- **Key Modules:** Event entity, EventRepository, EventService, EventController
+- **Frontend:** Events section, Calendar view, Add/Edit event modal
+
+### Member 4: IT25102080 - Reminder Scheduling
+- **Key Modules:** Reminder entity, ReminderRepository, ReminderService, ReminderTriggerService, ReminderController
+- **Frontend:** Reminder schedules, interval configuration, manual trigger checks
+
+### Member 5: IT25102077 - Notification Management
+- **Key Modules:** Notification entity, NotificationTemplate entity, Repositories, NotificationService, NotificationTemplateService, Controllers
+- **Frontend:** Notification dropdown, template manager, dispatch viewer
+
+### Member 6: IT25102069 - Reports, History & Support
+- **Key Modules:** ActivityLog, Feedback, SupportRequest entities, Repositories, Services, Controllers, SummaryReportDTO
+- **Frontend:** Activity audit log, Summary reports, Feedback & Support forms

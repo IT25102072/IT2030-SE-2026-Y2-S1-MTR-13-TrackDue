@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
         body.put("validationErrors", fieldErrors);
-        body.put("message", "Invalid input data");
+        body.put("message", fieldErrors.isEmpty() ? "Invalid input data" : String.join("; ", fieldErrors.values()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 

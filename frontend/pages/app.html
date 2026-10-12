@@ -9,12 +9,21 @@
   <link rel="stylesheet" href="../assets/css/style.css">
   <script>
     (function() {
+      // 1. Check Authentication
       const user = localStorage.getItem('trackdue_user');
       if (!user) {
         window.location.replace('index.html');
       }
+      // 2. Zero-flicker Theme Initialization
+      const mode = localStorage.getItem('trackdue_theme_mode') || 'system';
+      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const effective = mode === 'system' ? (isSystemDark ? 'dark' : 'light') : mode;
+      document.documentElement.setAttribute('data-theme', effective);
+      document.documentElement.setAttribute('data-theme-mode', mode);
+      document.documentElement.style.colorScheme = effective;
     })();
   </script>
+  <script src="../assets/js/theme.js"></script>
 </head>
 <body>
 
@@ -51,20 +60,48 @@
     <div class="sidebar-scroll">
       <!-- User Navigation Section (Visible ONLY for standard users) -->
       <div id="user-sidebar-section">
-        <a class="any-nav-item active" data-tab="myday" id="nav-item-myday">
-          <i class="fa-solid fa-circle-dot" style="color:#3b82f6;"></i>
-          <span>My day</span>
+        <a class="any-nav-item" data-tab="profile" id="nav-item-profile">
+          <i class="fa-solid fa-user-circle" style="color:#a855f7;"></i>
+          <span>My Profile</span>
         </a>
-        <a class="any-nav-item" data-tab="reminders" id="nav-item-reminders">
-          <i class="fa-regular fa-bell" style="color:#f59e0b;"></i>
-          <span>My Reminders</span>
-          <span class="item-badge" id="badge-reminders-sidebar">0</span>
+        <a class="any-nav-item active" data-tab="myday" id="nav-item-myday">
+          <i class="fa-solid fa-gauge-high" style="color:#3b82f6;"></i>
+          <span>Overall Dashboard</span>
+        </a>
+        <a class="any-nav-item" data-tab="bills" id="nav-item-bills">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
+          <span>Bills & Finance</span>
+          <span class="item-badge" id="badge-bills-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="events" id="nav-item-events">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
+          <span>Events & Deadlines</span>
+          <span class="item-badge" id="badge-events-sidebar">0</span>
         </a>
         <a class="any-nav-item" data-tab="notifications" id="nav-item-notifications">
           <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
-          <span>Notifications</span>
+          <span>My Notifications</span>
           <span class="item-badge" id="badge-notifications-sidebar">0</span>
         </a>
+        <a class="any-nav-item" data-tab="reminders" id="nav-item-reminders">
+          <i class="fa-regular fa-clock" style="color:#f59e0b;"></i>
+          <span>Upcoming Reminders</span>
+          <span class="item-badge" id="badge-reminders-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="reports" id="nav-item-user-reports">
+          <i class="fa-solid fa-chart-pie" style="color:#8b5cf6;"></i>
+          <span>Reports & History</span>
+        </a>
+        <a class="any-nav-item" data-tab="support" id="nav-item-support">
+          <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
+          <span>Help & Support Center</span>
+          <span class="item-badge" id="badge-support-sidebar">0</span>
+        </a>
+
+        <!-- Additional Workflow Views -->
+        <div class="nav-section-title">
+          <span>Views & Schedule</span>
+        </div>
         <a class="any-nav-item" data-tab="next7days" id="nav-item-next7days">
           <i class="fa-regular fa-calendar-days"></i>
           <span>Next 7 days</span>
@@ -79,52 +116,9 @@
           <i class="fa-regular fa-calendar"></i>
           <span>My Calendar</span>
         </a>
-
-        <!-- Lists & Commitments -->
-        <div class="nav-section-title">
-          <span>My Lists</span>
-          <i class="fa-solid fa-plus add-btn" id="btn-quick-add-bill" title="Add Bill"></i>
-        </div>
-        <a class="any-nav-item" data-tab="bills" id="nav-item-bills">
-          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
-          <span>Bills & Finance</span>
-          <span class="item-badge red" id="badge-overdue-sidebar">0</span>
-        </a>
-        <a class="any-nav-item" data-tab="events" id="nav-item-events">
-          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
-          <span>Events & Deadlines</span>
-        </a>
-
-        <!-- Help & Feedback -->
-        <div class="nav-section-title">
-          <span>Help & Feedback</span>
-        </div>
-        <a class="any-nav-item" data-tab="support" id="nav-item-support">
-          <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
-          <span>Support Requests</span>
-          <span class="item-badge" id="badge-support-sidebar">0</span>
-        </a>
         <a class="any-nav-item" data-tab="feedback" id="nav-item-feedback">
           <i class="fa-regular fa-star" style="color:#eab308;"></i>
           <span>Feedback</span>
-        </a>
-
-        <!-- Reports & Analytics -->
-        <div class="nav-section-title">
-          <span>Analytics & Reports</span>
-        </div>
-        <a class="any-nav-item" data-tab="reports" id="nav-item-user-reports">
-          <i class="fa-solid fa-chart-pie" style="color:#a855f7;"></i>
-          <span>Reports & History</span>
-        </a>
-
-        <!-- Account Settings -->
-        <div class="nav-section-title">
-          <span>My Account</span>
-        </div>
-        <a class="any-nav-item" data-tab="profile" id="nav-item-profile">
-          <i class="fa-solid fa-user-gear" style="color:#a855f7;"></i>
-          <span>Profile & Settings</span>
         </a>
       </div>
 
@@ -133,41 +127,57 @@
         <div class="nav-section-title" style="color: #c084fc; margin-top: 4px;">
           <span>Admin Console <i class="fa-solid fa-shield-halved" style="font-size:10px; margin-left:4px;"></i></span>
         </div>
-        <a class="any-nav-item active" data-tab="admin-overview" id="nav-item-admin-overview">
-          <i class="fa-solid fa-gauge-high" style="color:#38bdf8;"></i>
-          <span>Platform Overview</span>
-        </a>
         <a class="any-nav-item" data-tab="users" id="nav-item-users">
-          <i class="fa-solid fa-users" style="color:#c084fc;"></i>
+          <i class="fa-solid fa-users" style="color:#a855f7;"></i>
           <span>User Accounts</span>
           <span class="item-badge" id="badge-users-sidebar">0</span>
         </a>
+        <a class="any-nav-item active" data-tab="admin-overview" id="nav-item-admin-overview">
+          <i class="fa-solid fa-gauge-high" style="color:#38bdf8;"></i>
+          <span>Overall Dashboard</span>
+        </a>
+        <a class="any-nav-item" data-tab="bills" id="nav-item-admin-bills">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
+          <span>Bills & Finance</span>
+          <span class="item-badge" id="badge-admin-bills-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="events" id="nav-item-admin-events">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
+          <span>Events & Deadlines</span>
+          <span class="item-badge" id="badge-admin-events-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="notifications" id="nav-item-admin-notifications">
+          <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
+          <span>My Notifications</span>
+          <span class="item-badge" id="badge-admin-notifs-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="reminders" id="nav-item-admin-reminders">
+          <i class="fa-regular fa-clock" style="color:#f59e0b;"></i>
+          <span>Upcoming Reminders</span>
+          <span class="item-badge" id="badge-admin-reminders-sidebar">0</span>
+        </a>
+        <a class="any-nav-item" data-tab="reports" id="nav-item-reports">
+          <i class="fa-solid fa-chart-column" style="color:#8b5cf6;"></i>
+          <span>Reports & History</span>
+        </a>
         <a class="any-nav-item" data-tab="support" id="nav-item-admin-support">
           <i class="fa-solid fa-headset" style="color:#06b6d4;"></i>
-          <span>Support Helpdesk</span>
+          <span>Help & Support Center</span>
           <span class="item-badge" id="badge-admin-support-sidebar">0</span>
         </a>
+
+        <!-- Admin Management Links -->
+        <div class="nav-section-title" style="color: #94a3b8; margin-top: 8px;">
+          <span>Management</span>
+        </div>
         <a class="any-nav-item" data-tab="feedback" id="nav-item-admin-feedback">
           <i class="fa-regular fa-star" style="color:#fbbf24;"></i>
           <span>User Feedback</span>
           <span class="item-badge" id="badge-admin-feedback-sidebar">0</span>
         </a>
-        <a class="any-nav-item" data-tab="reports" id="nav-item-reports">
-          <i class="fa-solid fa-chart-column" style="color:#8b5cf6;"></i>
-          <span>Reports & Overdue</span>
-        </a>
         <a class="any-nav-item" data-tab="history" id="nav-item-history">
           <i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i>
           <span>Activity History</span>
-        </a>
-        <a class="any-nav-item" data-tab="notifications" id="nav-item-admin-notifications">
-          <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
-          <span>Notifications</span>
-          <span class="item-badge" id="badge-admin-notifs-sidebar">0</span>
-        </a>
-        <a class="any-nav-item" data-tab="profile" id="nav-item-admin-profile">
-          <i class="fa-solid fa-user-gear" style="color:#a855f7;"></i>
-          <span>Profile & Settings</span>
         </a>
       </div>
     </div>
@@ -213,58 +223,81 @@
       </svg>
     </div>
 
-    <!-- Top Navigation Bar (Any.do Style) -->
+    <!-- Top Navigation Bar (Compulsory Essentials Only) -->
     <header class="any-topbar">
-      <!-- Left: View Identifier / Title -->
+      <!-- Left: Active View Identifier -->
       <div class="topbar-left">
         <div class="view-selector-btn" id="topbar-view-btn">
-          <i class="fa-solid fa-circle-dot"></i>
-          <span id="topbar-view-text">My day</span>
-        </div>
-        <div class="pill-filter-tag" id="topbar-list-tag">
-          <i class="fa-solid fa-lock" style="font-size:10px;"></i>
-          <span id="topbar-list-name">All Items</span>
-        </div>
-        <div class="pill-filter-tag" id="topbar-filter-btn">
-          <i class="fa-solid fa-bars-staggered" style="font-size:11px;"></i>
-          <span>Filter</span>
+          <i class="fa-solid fa-circle-dot" style="color: var(--any-blue);"></i>
+          <span id="topbar-view-text">Overall Dashboard</span>
         </div>
       </div>
 
-      <!-- Center: Authenticated User Session Profile & Logout -->
-      <div class="user-session-bar" id="topbar-user-session-bar">
-        <div class="user-session-pill" onclick="switchTab('profile')" style="cursor:pointer;" title="View & Edit Profile">
-          <div class="user-session-avatar" id="topbar-user-avatar">
-            <i class="fa-regular fa-user"></i>
-          </div>
-          <div class="user-session-meta">
-            <span class="user-session-name" id="topbar-user-name">Account</span>
-          </div>
-        </div>
-        <button class="btn-logout-action" id="btn-logout-action" title="Sign out of TrackDue">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          <span>Logout</span>
+      <!-- Center: 6 Main Functional Requirement Shortcuts with Matching Icons (Icon Only) -->
+      <nav class="topbar-shortcuts" id="header-main-shortcuts" aria-label="Core Module Shortcuts">
+        <button type="button" class="topbar-shortcut-btn active" data-shortcut="dashboard" onclick="handleShortcutClick('dashboard')" title="Overall Dashboard">
+          <i class="fa-solid fa-gauge-high" style="color:#3b82f6;"></i>
         </button>
-      </div>
+        <button type="button" class="topbar-shortcut-btn" data-shortcut="bills" onclick="handleShortcutClick('bills')" title="Bills & Financial Due">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i>
+        </button>
+        <button type="button" class="topbar-shortcut-btn" data-shortcut="events" onclick="handleShortcutClick('events')" title="Events & Deadlines">
+          <i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i>
+        </button>
+        <button type="button" class="topbar-shortcut-btn" data-shortcut="notifications" onclick="handleShortcutClick('notifications')" title="My Notifications & Alerts">
+          <i class="fa-solid fa-bell" style="color:#38bdf8;"></i>
+        </button>
+        <button type="button" class="topbar-shortcut-btn" data-shortcut="reminders" onclick="handleShortcutClick('reminders')" title="Upcoming Reminders">
+          <i class="fa-regular fa-clock" style="color:#f59e0b;"></i>
+        </button>
+        <button type="button" class="topbar-shortcut-btn" data-shortcut="reports" onclick="handleShortcutClick('reports')" title="Reports & Analytics">
+          <i class="fa-solid fa-chart-pie" style="color:#8b5cf6;"></i>
+        </button>
+      </nav>
 
-      <!-- Right: Action Icons (Refresh, Support, Split, Search, Notifications) -->
+      <!-- Right: Compulsory Essentials (Theme Mode, Notifications Alert, User Account, Logout) -->
       <div class="topbar-right">
-        <button class="icon-action-btn" id="btn-topbar-refresh" title="Sync / Refresh">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
-        <button class="icon-action-btn" onclick="switchTab('support')" title="Help & Support">
-          <i class="fa-solid fa-headset"></i>
-        </button>
-        <button class="icon-action-btn" onclick="switchTab('alltasks')" title="Split View">
-          <i class="fa-regular fa-square"></i>
-        </button>
-        <button class="icon-action-btn" id="btn-topbar-search" title="Search">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-        <button class="icon-action-btn" id="btn-topbar-notifs" title="Notifications">
+        <!-- 1. Theme Mode Switcher -->
+        <div class="theme-switcher-wrapper" id="theme-switcher-wrapper">
+          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleThemeDropdown(event)" title="Theme: SYSTEM (Click to change)">
+            <i id="theme-toggle-icon" class="fa-solid fa-circle-half-stroke"></i>
+            <span id="theme-toggle-text">System</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:9px; opacity:0.6; margin-left:1px;"></i>
+          </button>
+          <div class="theme-dropdown-menu" id="theme-dropdown-menu">
+            <button class="theme-dropdown-item" data-theme-val="light" onclick="selectThemeMode('light', event)">
+              <i class="fa-solid fa-sun" style="color:#f59e0b;"></i> Light Mode
+            </button>
+            <button class="theme-dropdown-item" data-theme-val="dark" onclick="selectThemeMode('dark', event)">
+              <i class="fa-solid fa-moon" style="color:#38bdf8;"></i> Dark Mode
+            </button>
+            <button class="theme-dropdown-item" data-theme-val="system" onclick="selectThemeMode('system', event)">
+              <i class="fa-solid fa-circle-half-stroke" style="color:#a855f7;"></i> System Default
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Notifications Alert Icon with Unread Bubble -->
+        <button class="icon-action-btn" id="btn-topbar-notifs" onclick="switchTab('notifications')" title="Notifications">
           <i class="fa-regular fa-bell"></i>
           <span class="notif-bubble" id="topbar-notif-count">0</span>
         </button>
+
+        <!-- 3. User Session Profile Pill & Logout -->
+        <div class="user-session-bar" id="topbar-user-session-bar">
+          <div class="user-session-pill" onclick="switchTab('profile')" style="cursor:pointer;" title="View & Edit Profile">
+            <div class="user-session-avatar" id="topbar-user-avatar">
+              <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="user-session-meta">
+              <span class="user-session-name" id="topbar-user-name">Account</span>
+            </div>
+          </div>
+          <button class="btn-logout-action" id="btn-logout-action" title="Sign out of TrackDue">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -277,11 +310,16 @@
         <div class="myday-header-box" style="margin-bottom: 24px;">
           <div class="greeting-row" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
             <div>
-              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
-                Admin Control Center <span style="color:#38bdf8;">•</span>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status" style="background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-shield-halved"></i> SYSTEM ADMINISTRATION
+                </span>
+              </div>
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-shield-halved" style="color:#3b82f6;"></i> Admin Control Center
               </h1>
-              <p style="color: var(--any-text-muted); font-size: 14px; margin:0;">
-                Manage system users, broadcast in-app announcements, and customize global reminder templates.
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Manage system users, broadcast in-app announcements, monitor system health, and customize global reminder notification templates.
               </p>
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
@@ -342,7 +380,10 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
           <div class="any-card-panel">
             <div class="panel-header-row">
-              <h3><i class="fa-solid fa-users-gear" style="color:#c084fc;"></i> Registered User Accounts</h3>
+              <div>
+                <h3><i class="fa-solid fa-users-gear" style="color:#c084fc;"></i> Registered User Accounts</h3>
+                <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Active user accounts and recent signups</p>
+              </div>
               <button class="btn-any-subtle" onclick="switchTab('users')" style="font-size:12px;">Manage Users</button>
             </div>
             <div id="admin-recent-users-list" style="display:flex; flex-direction:column; gap:10px;">
@@ -352,7 +393,10 @@
 
           <div class="any-card-panel">
             <div class="panel-header-row">
-              <h3><i class="fa-solid fa-ticket" style="color:#06b6d4;"></i> Recent Support Tickets</h3>
+              <div>
+                <h3><i class="fa-solid fa-ticket" style="color:#06b6d4;"></i> Recent Support Tickets</h3>
+                <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Active issues and assistance requests</p>
+              </div>
               <button class="btn-any-subtle" onclick="switchTab('support')" style="font-size:12px;">Open Helpdesk</button>
             </div>
             <div id="admin-recent-support-list" style="display:flex; flex-direction:column; gap:10px;">
@@ -440,6 +484,12 @@
 
       <!-- ================= VIEW 2: NEXT 7 DAYS KANBAN (Screenshot 2) ================= -->
       <section id="view-next7days" class="view-section">
+        <div class="panel-header-row" style="margin-bottom: 16px;">
+          <div>
+            <h3><i class="fa-solid fa-calendar-week" style="color:#3b82f6;"></i> Next 7 Days Pipeline</h3>
+            <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Interactive Kanban pipeline of upcoming bills and events scheduled for the next 7 days.</p>
+          </div>
+        </div>
         <div class="kanban-board-container" id="kanban-columns-wrapper">
           <!-- Dynamically populated 7-day columns -->
         </div>
@@ -447,6 +497,12 @@
 
       <!-- ================= VIEW 3: ALL TASKS & BILLS 2-PANE (Screenshot 3 & 5) ================= -->
       <section id="view-alltasks" class="view-section">
+        <div class="panel-header-row" style="margin-bottom: 16px;">
+          <div>
+            <h3><i class="fa-solid fa-list-check" style="color:#10b981;"></i> All Scheduled Tasks &amp; Due Items</h3>
+            <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Unified task inspector for managing daily deadlines, pending obligations, and completed items.</p>
+          </div>
+        </div>
         <div class="two-pane-container">
           <!-- Left Task List Pane -->
           <div class="task-list-pane">
@@ -597,7 +653,10 @@
       <section id="view-bills" class="view-section">
         <div class="any-card-panel">
           <div class="panel-header-row">
-            <h3><i class="fa-solid fa-file-invoice-dollar"></i> Organizational Bills</h3>
+            <div>
+              <h3><i class="fa-solid fa-file-invoice-dollar" style="color:var(--any-blue);"></i> Organizational Bills</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Track recurring organizational expenses, vendor invoices, payment due dates, and settlement status.</p>
+            </div>
             <button class="btn-any-blue" onclick="openAddBillModal()"><i class="fa-solid fa-plus"></i> Add Bill</button>
           </div>
           <div class="any-input-row">
@@ -622,7 +681,8 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Bill Name</th>
+                <th>Bill & Vendor</th>
+                <th>Ref No.</th>
                 <th>Category</th>
                 <th>Amount (LKR)</th>
                 <th>Due Date</th>
@@ -640,7 +700,10 @@
       <section id="view-events" class="view-section">
         <div class="any-card-panel">
           <div class="panel-header-row">
-            <h3><i class="fa-solid fa-calendar-check"></i> Events & Audits</h3>
+            <div>
+              <h3><i class="fa-solid fa-calendar-check" style="color:#0ea5e9;"></i> Events &amp; Audits</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Schedule corporate meetings, conference deadlines, compliance audits, and track attendee participation.</p>
+            </div>
             <button class="btn-any-blue" onclick="openAddEventModal()"><i class="fa-solid fa-plus"></i> Add Event</button>
           </div>
           <div class="any-input-row">
@@ -683,15 +746,31 @@
       <section id="view-reminders" class="view-section">
         <div class="rem-container">
           
-          <!-- Header Banner -->
-          <div class="rem-header-banner">
-            <div class="rem-header-left">
-              <h2><i class="fa-regular fa-bell"></i> Scheduled Reminders</h2>
-              <p>Manage, track, and customize automated alerts for bills, invoices, and organization events.</p>
+          <!-- Reminders Header Banner (Main Function: Scheduled Reminders) -->
+          <div class="myday-header-box" style="margin-bottom: 20px;">
+            <div class="greeting-row">
+              <div>
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                  <span class="badge-status" style="background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                    <i class="fa-regular fa-clock"></i> AUTOMATED SCHEDULING &amp; DISPATCH
+                  </span>
+                </div>
+                <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                  <i class="fa-regular fa-clock" style="color:#f59e0b;"></i> Scheduled Reminders
+                </h1>
+                <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                  Configure multi-channel automated alert schedules, set advance lead-time notifications for pending bills and events, customize dispatch rules, and monitor upcoming notification queues.
+                </p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button class="btn-any-blue" onclick="openAddReminderModal()">
+                  <i class="fa-solid fa-plus"></i> Schedule Reminder
+                </button>
+                <button class="btn-any-subtle" onclick="loadRemindersTable()" title="Refresh Reminders">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
             </div>
-            <button class="btn-any-blue" onclick="openAddReminderModal()">
-              <i class="fa-solid fa-plus"></i> Schedule Reminder
-            </button>
           </div>
 
           <!-- KPI Summary Cards -->
@@ -833,11 +912,11 @@
                   <i class="fa-solid fa-chart-pie"></i> ANALYTICS & AUDIT
                 </span>
               </div>
-              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
-                Reports, Analytics & History
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-chart-pie" style="color:#c084fc;"></i> Reports, Analytics &amp; History
               </h1>
-              <p style="color: var(--any-text-muted); font-size: 13.5px; max-width: 840px; line-height: 1.5; margin: 0;">
-                Track pending bill obligations, average commitments, settled payments, event attendance rate, view uploaded payment receipts, and export statements in CSV, Excel, or Print / PDF.
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Analyze organizational financial obligations, track pending bills and settled payments, evaluate event attendance rates, audit uploaded payment receipts, and export comprehensive audit statements in CSV, Excel, or Print / PDF formats.
               </p>
             </div>
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
@@ -866,7 +945,7 @@
               <div class="stat-content">
                 <div class="stat-num" id="rep-stat-pending-bills" style="color:#f59e0b;">0</div>
                 <div class="stat-lbl">Pending Bills</div>
-                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-pending-amount">LKR 0.00</div>
+                <div style="font-size:13.5px; font-weight:700; color: var(--any-text); margin-top:2px;" id="rep-stat-pending-amount">LKR 0.00</div>
                 <div style="font-size:11px; color:#93c5fd; margin-top:3px;" id="rep-stat-avg-pending">Avg: LKR 0.00 / bill</div>
               </div>
             </div>
@@ -879,7 +958,7 @@
               <div class="stat-content">
                 <div class="stat-num" id="rep-stat-paid-bills" style="color:#10b981;">0</div>
                 <div class="stat-lbl">Paid Bills Settled</div>
-                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-paid-amount">LKR 0.00</div>
+                <div style="font-size:13.5px; font-weight:700; color: var(--any-text); margin-top:2px;" id="rep-stat-paid-amount">LKR 0.00</div>
                 <div style="font-size:11px; color:#a7f3d0; margin-top:3px;" id="rep-stat-receipts-count"><i class="fa-solid fa-receipt"></i> 0 Receipts Uploaded</div>
               </div>
             </div>
@@ -892,7 +971,7 @@
               <div class="stat-content">
                 <div class="stat-num" id="rep-stat-upcoming-events" style="color:#38bdf8;">0</div>
                 <div class="stat-lbl">Upcoming Events</div>
-                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-total-events">0 Total Events</div>
+                <div style="font-size:13.5px; font-weight:700; color: var(--any-text); margin-top:2px;" id="rep-stat-total-events">0 Total Events</div>
                 <div style="font-size:11px; color:var(--any-text-muted); margin-top:3px;">Scheduled Ahead</div>
               </div>
             </div>
@@ -905,7 +984,7 @@
               <div class="stat-content">
                 <div class="stat-num" id="rep-stat-completed-events" style="color:#c084fc;">0</div>
                 <div class="stat-lbl">Attended Events</div>
-                <div style="font-size:13.5px; font-weight:700; color:#fff; margin-top:2px;" id="rep-stat-attendance-rate">0% Attendance</div>
+                <div style="font-size:13.5px; font-weight:700; color: var(--any-text); margin-top:2px;" id="rep-stat-attendance-rate">0% Attendance</div>
                 <div style="font-size:11px; color:#e9d5ff; margin-top:3px;">Completed & Verified</div>
               </div>
             </div>
@@ -1052,7 +1131,10 @@
       <section id="view-history" class="view-section">
         <div class="any-card-panel">
           <div class="panel-header-row">
-            <h3><i class="fa-solid fa-clock-rotate-left"></i> Activity History</h3>
+            <div>
+              <h3><i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i> Activity History</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Comprehensive audit trail of system activities, user operations, record updates, and security logs.</p>
+            </div>
             <button class="btn-any-subtle" id="btn-refresh-history"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
           </div>
           <div class="any-input-row">
@@ -1096,12 +1178,12 @@
         <div class="any-card-panel">
           <div class="panel-header-row">
             <div>
-              <h3><i class="fa-solid fa-headset"></i> Support Request Management</h3>
-              <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">Track system tickets, error reporting, and live progress pipeline</p>
+              <h3><i class="fa-solid fa-headset" style="color:#06b6d4;"></i> Support Request Management</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Track technical assistance tickets, error troubleshooting, and live resolution pipeline.</p>
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
               <!-- View Switcher (Pipeline Board vs Table List) -->
-              <div id="support-view-toggle-wrap" style="display:flex; background:#181818; padding:3px; border-radius:var(--radius-sm); border:1px solid var(--any-border);">
+              <div id="support-view-toggle-wrap" style="display:flex; background:var(--any-input-bg); padding:3px; border-radius:var(--radius-sm); border:1px solid var(--any-border);">
                 <button type="button" class="btn-any-subtle active" id="btn-support-kanban" onclick="setSupportViewMode('kanban')" style="padding:4px 12px; font-size:12px; border-radius:6px;">
                   <i class="fa-solid fa-columns"></i> Pipeline Board
                 </button>
@@ -1192,8 +1274,8 @@
         <div class="any-card-panel">
           <div class="panel-header-row">
             <div>
-              <h3><i class="fa-regular fa-star"></i> Feedback & Reviews</h3>
-              <p style="font-size:12px; color:var(--any-text-muted); margin-top:2px;">User reviews, system rating and platform suggestions</p>
+              <h3><i class="fa-regular fa-star" style="color:#eab308;"></i> Feedback &amp; Reviews</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Submit user reviews, evaluate platform rating satisfaction, and share enhancement suggestions.</p>
             </div>
             <button class="btn-any-blue" id="btn-feedback-action" onclick="openFeedbackActionModal()"><i class="fa-solid fa-star"></i> Give Feedback</button>
           </div>
@@ -1220,28 +1302,67 @@
 
       <!-- ================= VIEW 12: USER ACCOUNTS (ADMIN ONLY) ================= -->
       <section id="view-users" class="view-section">
-        <div class="any-card-panel">
-          <div class="panel-header-row">
+        <!-- User Directory Header Banner (Admin Main Function) -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
             <div>
-              <h3><i class="fa-solid fa-users"></i> Registered User Directory</h3>
-              <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">Administrative view of all registered accounts and active status</p>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status resolved" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-users-gear"></i> USER MANAGEMENT &amp; ACCESS CONTROL
+                </span>
+              </div>
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-users" style="color:#8b5cf6;"></i> Registered User Directory
+              </h1>
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Comprehensive administrative oversight of all registered platform members, account status verification, contact details, security credentials, and organization access rights.
+              </p>
             </div>
-            <button class="btn-any-subtle" onclick="loadUsersView()"><i class="fa-solid fa-rotate-right"></i> Refresh Users</button>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button class="btn-any-subtle" onclick="loadUsersView()" title="Refresh Users Directory">
+                <i class="fa-solid fa-rotate-right"></i> Refresh Users
+              </button>
+            </div>
           </div>
 
           <!-- User Stats KPI Counter Row for Admin -->
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 20px;">
-            <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
-              <div style="font-size: 26px; font-weight: 800; color: #c084fc;" id="admin-user-count">0</div>
-              <div style="font-size: 12px; color: var(--any-text-muted);">Total Registered Users</div>
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 20px;">
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-user-count" style="color:#c084fc;">0</div>
+                <div class="stat-lbl">Total Registered Users</div>
+              </div>
             </div>
-            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
-              <div style="font-size: 26px; font-weight: 800; color: #34d399;" id="admin-active-count">0</div>
-              <div style="font-size: 12px; color: var(--any-text-muted);">Active Accounts</div>
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-active-count" style="color:#10b981;">0</div>
+                <div class="stat-lbl">Active Accounts</div>
+              </div>
             </div>
-            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px 18px; border-radius: var(--radius-md);">
-              <div style="font-size: 26px; font-weight: 800; color: #60a5fa;" id="admin-reminders-total">0</div>
-              <div style="font-size: 12px; color: var(--any-text-muted);">System Reminders</div>
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                <i class="fa-solid fa-bell"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-reminders-total" style="color:#3b82f6;">0</div>
+                <div class="stat-lbl">System Reminders</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Accounts Table Card -->
+        <div class="any-card-panel">
+          <div class="panel-header-row">
+            <div>
+              <h3><i class="fa-solid fa-table-list" style="color:#8b5cf6;"></i> Registered User Records</h3>
+              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Full directory listing of accounts with verification status and registration timestamp.</p>
             </div>
           </div>
 
@@ -1264,15 +1385,27 @@
       <!-- ================= VIEW 13: USER PROFILE & ACCOUNT SETTINGS ================= -->
       <section id="view-profile" class="view-section">
         <div class="profile-container">
-          <!-- Profile Header Banner -->
+          <!-- Profile Header Banner (Main Function: Account & Profile Settings) -->
           <div class="myday-header-box" style="margin-bottom: 24px;">
-            <div class="greeting-row">
-              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
-                Account & Profile Settings <span style="color:#a855f7;">•</span>
-              </h1>
-              <p style="color: var(--any-text-muted); font-size: 14px;">
-                Manage your personal information, security credentials, and account settings.
-              </p>
+            <div class="greeting-row" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                  <span class="badge-status resolved" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                    <i class="fa-solid fa-user-shield"></i> ACCOUNT &amp; PROFILE SECURITY
+                  </span>
+                </div>
+                <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                  <i class="fa-solid fa-id-card-clip" style="color:#a855f7;"></i> Account &amp; Profile Settings
+                </h1>
+                <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                  Manage your personal profile information, update account password and security credentials, customize system appearance and theme preferences, and review active session security across all devices.
+                </p>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <button class="btn-any-subtle" onclick="loadProfileView()" title="Refresh Profile">
+                  <i class="fa-solid fa-rotate-right"></i> Refresh
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1282,11 +1415,57 @@
               <i class="fa-solid fa-user"></i>
             </div>
             <div class="profile-hero-info">
-              <h2 id="profile-hero-name" style="font-size: 22px; font-weight: 700; color: #ffffff;">Loading User...</h2>
+              <h2 id="profile-hero-name" style="font-size: 22px; font-weight: 700; color: var(--any-text);">Loading User...</h2>
               <div class="profile-hero-meta">
                 <span id="profile-hero-email" style="color: var(--any-text-muted); font-size: 13px;"><i class="fa-regular fa-envelope"></i> -</span>
                 <span class="profile-badge-pill" id="profile-hero-role">Standard User</span>
                 <span class="profile-badge-pill active-badge" id="profile-hero-status"><i class="fa-solid fa-circle-check"></i> Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Appearance & System Theme Preferences Panel -->
+          <div class="any-card-panel" style="margin-bottom: 24px;">
+            <div class="panel-header-row" style="margin-bottom: 6px;">
+              <div>
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--any-text);">
+                  <i class="fa-solid fa-palette" style="color:#a855f7; margin-right: 8px;"></i>Appearance & System Theme
+                </h3>
+                <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">
+                  Personalize your workspace. Choose Dark Mode, Light Mode, or automatically match your operating system theme.
+                </p>
+              </div>
+            </div>
+
+            <div class="theme-preferences-grid">
+              <!-- Light Mode Card -->
+              <div class="theme-option-card" data-theme-val="light" onclick="TrackDueTheme.setMode('light')">
+                <div class="theme-check-icon"><i class="fa-solid fa-check"></i></div>
+                <div class="theme-card-icon-wrap" style="color:#f59e0b;">
+                  <i class="fa-solid fa-sun"></i>
+                </div>
+                <div class="theme-card-title">Light Mode</div>
+                <div class="theme-card-desc">Crisp, high-contrast light surfaces tailored for daylight and well-lit workspaces.</div>
+              </div>
+
+              <!-- Dark Mode Card -->
+              <div class="theme-option-card" data-theme-val="dark" onclick="TrackDueTheme.setMode('dark')">
+                <div class="theme-check-icon"><i class="fa-solid fa-check"></i></div>
+                <div class="theme-card-icon-wrap" style="color:#38bdf8;">
+                  <i class="fa-solid fa-moon"></i>
+                </div>
+                <div class="theme-card-title">Dark Mode</div>
+                <div class="theme-card-desc">Sleek, low-glare dark surfaces inspired by Any.do to minimize eye fatigue.</div>
+              </div>
+
+              <!-- System Default Card -->
+              <div class="theme-option-card" data-theme-val="system" onclick="TrackDueTheme.setMode('system')">
+                <div class="theme-check-icon"><i class="fa-solid fa-check"></i></div>
+                <div class="theme-card-icon-wrap" style="color:#a855f7;">
+                  <i class="fa-solid fa-circle-half-stroke"></i>
+                </div>
+                <div class="theme-card-title">System Default</div>
+                <div class="theme-card-desc">Automatically adjusts between Light and Dark mode based on your device system settings.</div>
               </div>
             </div>
           </div>
@@ -1297,7 +1476,7 @@
             <div class="any-card-panel">
               <div class="panel-header-row" style="margin-bottom: 16px;">
                 <div>
-                  <h3 style="font-size: 16px; font-weight: 600; color: #fff;">
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--any-text);">
                     <i class="fa-regular fa-id-card" style="color:#3b82f6; margin-right: 8px;"></i>Personal Information
                   </h3>
                   <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">
@@ -1320,7 +1499,7 @@
 
                 <div class="any-form-group" style="margin-bottom: 14px;">
                   <label style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 6px; display: block;">Email Address (Account ID)</label>
-                  <input type="email" class="any-input-field" id="profile-email-input" readonly disabled style="width: 100%; opacity: 0.65; cursor: not-allowed; background: #181818;">
+                  <input type="email" class="any-input-field" id="profile-email-input" readonly disabled style="width: 100%; opacity: 0.65; cursor: not-allowed; background: var(--table-header-bg);">
                   <small style="color: var(--any-text-sub); font-size: 11px; margin-top: 4px; display: block;">Email is your permanent login identifier.</small>
                 </div>
 
@@ -1341,7 +1520,7 @@
             <div class="any-card-panel">
               <div class="panel-header-row" style="margin-bottom: 16px;">
                 <div>
-                  <h3 style="font-size: 16px; font-weight: 600; color: #fff;">
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--any-text);">
                     <i class="fa-solid fa-lock" style="color:#10b981; margin-right: 8px;"></i>Change / Reset Password
                   </h3>
                   <p style="font-size: 12px; color: var(--any-text-muted); margin-top: 2px;">
@@ -1413,14 +1592,14 @@
             <div>
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
                 <span class="badge-status pending" style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
-                  <i class="fa-solid fa-bell"></i> IN-APP NOTIFICATIONS
+                  <i class="fa-solid fa-bell"></i> IN-APP NOTIFICATIONS &amp; DISPATCH
                 </span>
               </div>
-              <h1 style="font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px;">
-                Notification Management Center
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-bell" style="color:#38bdf8;"></i> Notification Management Center
               </h1>
-              <p style="color: var(--any-text-muted); font-size: 13.5px; max-width: 840px; line-height: 1.5; margin: 0;">
-                Manage in-app reminder notifications, customize alert messages, create custom reminders, and track alert status.
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Monitor automated reminder dispatches, customize personalized alert notification templates, review pending and read notifications, and track alert delivery status across all organization workflows.
               </p>
             </div>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -1506,23 +1685,67 @@
 
     </div>
 
-    <!-- Bottom Quick Add Input Bar (Any.do Style) -->
-    <div class="any-bottom-bar">
-      <div class="quick-add-input-box" onclick="openAddBillModal()">
-        <i class="fa-solid fa-plus"></i>
-        <input type="text" placeholder="Add task or bill in personal... (Click to add)" readonly>
-        <i class="fa-solid fa-robot" style="color:#10b981;" title="Smart AI Scheduler"></i>
-      </div>
-    </div>
-
-    <!-- Floating Action Button (+ Create) in Bottom Right (Any.do Style) -->
-    <button class="any-floating-btn" onclick="openAddBillModal()" title="Add New Item">
+    <!-- Floating Action Button (+ Create) on RHS with Smooth Hover Expansion -->
+    <button class="any-floating-btn" id="main-floating-create-btn" onclick="openCreateChoiceModal()" title="Create New Bill or Event">
       <i class="fa-solid fa-plus"></i>
+      <span class="floating-btn-text">Create Bill or Event</span>
     </button>
   </main>
 </div>
 
 <!-- ================= MODALS ================= -->
+
+<!-- Modal: Create Choice (Bill vs Event vs Reminder) -->
+<div class="any-modal-overlay" id="modal-create-choice">
+  <div class="any-modal-card" style="max-width: 780px;">
+    <div class="any-modal-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px; height:36px; border-radius:10px; background:rgba(37,99,235,0.15); display:flex; align-items:center; justify-content:center; color:#3b82f6; font-size:18px;">
+          <i class="fa-solid fa-circle-plus"></i>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:17px; font-weight:700; color:var(--any-text);">Create New Commitment</h3>
+          <span style="font-size:12px; color:var(--any-text-muted);">Choose what you would like to schedule, track, or set an alert for</span>
+        </div>
+      </div>
+      <button class="any-modal-close" onclick="closeModal('modal-create-choice')">&times;</button>
+    </div>
+    <div class="any-modal-body" style="padding: 20px;">
+      <div class="create-choice-grid">
+        <div class="create-choice-card bill-choice" onclick="selectCreateChoice('bill')">
+          <div class="create-choice-icon">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+          </div>
+          <div class="create-choice-title">Bill & Financial Due</div>
+          <div class="create-choice-desc">Add utility bills, monthly rents, cloud servers, or institutional liabilities with automated due reminders.</div>
+          <button type="button" class="btn-any-blue" style="background:#10b981; width:100%; margin-top:8px; font-size:12px;">
+            <i class="fa-solid fa-plus"></i> Add Bill
+          </button>
+        </div>
+        <div class="create-choice-card event-choice" onclick="selectCreateChoice('event')">
+          <div class="create-choice-icon">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </div>
+          <div class="create-choice-title">Event & Deadline</div>
+          <div class="create-choice-desc">Schedule meetings, university lectures, project submission deadlines, or corporate gatherings.</div>
+          <button type="button" class="btn-any-blue" style="background:#2563eb; width:100%; margin-top:8px; font-size:12px;">
+            <i class="fa-solid fa-plus"></i> Add Event
+          </button>
+        </div>
+        <div class="create-choice-card reminder-choice" onclick="selectCreateChoice('reminder')">
+          <div class="create-choice-icon">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          <div class="create-choice-title">Reminder & Alert</div>
+          <div class="create-choice-desc">Schedule one-time or recurring alert notifications, custom timers, and routine task alarms.</div>
+          <button type="button" class="btn-any-blue" style="background:#f59e0b; width:100%; margin-top:8px; font-size:12px;">
+            <i class="fa-solid fa-plus"></i> Add Reminder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal: Add Bill -->
 <div class="any-modal-overlay" id="modal-bill">
@@ -1531,12 +1754,20 @@
       <h3 id="modal-bill-title">Add New Bill</h3>
       <button class="any-modal-close" onclick="closeModal('modal-bill')">&times;</button>
     </div>
-    <form id="form-bill">
+    <form id="form-bill" novalidate>
       <div class="any-modal-body">
         <input type="hidden" id="bill-id">
-        <div class="any-form-group">
-          <label>Bill Name *</label>
-          <input type="text" class="any-input-field" id="bill-name" required placeholder="e.g. Internet Leased Line" style="width:100%;">
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:10px;">
+          <div class="any-form-group">
+            <label>Bill Name *</label>
+            <input type="text" class="any-input-field" id="bill-name" required placeholder="e.g. Internet Leased Line" style="width:100%;">
+            <span class="field-error-msg" id="err-bill-name" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
+          </div>
+          <div class="any-form-group">
+            <label>Vendor *</label>
+            <input type="text" class="any-input-field" id="bill-vendor" required placeholder="e.g. Dialog Axiata PLC" style="width:100%;">
+            <span class="field-error-msg" id="err-bill-vendor" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
+          </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="any-form-group">
@@ -1560,6 +1791,7 @@
               <option value="Other">Other</option>
               <option value="__CUSTOM__">+ Type Custom Category...</option>
             </select>
+            <span class="field-error-msg" id="err-bill-category" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
             <div id="grp-bill-category-custom" style="display:none; margin-top:6px;">
               <div style="position:relative;">
                 <input type="text" class="any-input-field" id="bill-category-custom" placeholder="Type new category (e.g. Fuel, Hospital, Gym...)" style="width:100%; padding-right:26px; border-color:#38bdf8;">
@@ -1568,15 +1800,24 @@
             </div>
           </div>
           <div class="any-form-group">
-            <label>Amount (LKR) *</label>
-            <input type="number" step="0.01" class="any-input-field" id="bill-amount" required placeholder="35000.00" style="width:100%;">
+            <label>Reference No. * <span style="font-size:10.5px; color:var(--any-text-muted); font-weight:normal;">(e.g. REF-2024-001)</span></label>
+            <input type="text" class="any-input-field" id="bill-reference-no" required placeholder="REF-2024-001" style="width:100%;">
+            <span class="field-error-msg" id="err-bill-reference-no" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="any-form-group">
+            <label>Amount (LKR) *</label>
+            <input type="number" step="0.01" min="0.01" class="any-input-field" id="bill-amount" required placeholder="35000.00" style="width:100%;">
+            <span class="field-error-msg" id="err-bill-amount" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
+          </div>
+          <div class="any-form-group">
             <label>Due Date *</label>
             <input type="date" class="any-input-field" id="bill-due-date" required style="width:100%;" onchange="updateReminderPreview('bill')">
+            <span class="field-error-msg" id="err-bill-due-date" style="color:#f87171; font-size:11px; display:none; margin-top:2px;"></span>
           </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="any-form-group">
             <label>Recurrence</label>
             <select class="any-input-field" id="bill-recurring" style="width:100%;">
@@ -1586,20 +1827,20 @@
               <option value="ANNUALLY">Annually</option>
             </select>
           </div>
-        </div>
-        <div class="any-form-group" id="grp-bill-status">
-          <label>Status</label>
-          <select class="any-input-field" id="bill-status" style="width:100%;">
-            <option value="PENDING">PENDING</option>
-            <option value="PAID">PAID</option>
-            <option value="OVERDUE">OVERDUE</option>
-          </select>
+          <div class="any-form-group" id="grp-bill-status">
+            <label>Status</label>
+            <select class="any-input-field" id="bill-status" style="width:100%;">
+              <option value="PENDING">PENDING</option>
+              <option value="PAID">PAID</option>
+              <option value="OVERDUE">OVERDUE</option>
+            </select>
+          </div>
         </div>
 
         <!-- Reminder Scheduling Section for Bill -->
         <div class="reminder-config-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--any-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px;">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
-            <label style="font-size:12.5px; font-weight:600; color:#fff; display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <label style="font-size:12.5px; font-weight:600; color: var(--any-text); display:flex; align-items:center; gap:8px; cursor:pointer;">
               <input type="checkbox" id="bill-reminder-enable" checked onchange="toggleReminderSection('bill')">
               <i class="fa-regular fa-bell" style="color:#f59e0b;"></i> Schedule Alert Reminder
             </label>
@@ -1722,7 +1963,7 @@
         <!-- Reminder Scheduling Section for Event -->
         <div class="reminder-config-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--any-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px;">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
-            <label style="font-size:12.5px; font-weight:600; color:#fff; display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <label style="font-size:12.5px; font-weight:600; color: var(--any-text); display:flex; align-items:center; gap:8px; cursor:pointer;">
               <input type="checkbox" id="event-reminder-enable" checked onchange="toggleReminderSection('event')">
               <i class="fa-regular fa-bell" style="color:#0ea5e9;"></i> Schedule Alert Reminder
             </label>
@@ -1842,10 +2083,10 @@
       <button class="any-modal-close" onclick="closeModal('modal-view-reminder')">&times;</button>
     </div>
     <div class="any-modal-body">
-      <div id="view-rem-target-banner" style="display:flex; align-items:center; gap:14px; padding:14px 16px; background:#222; border-radius:8px; border:1px solid var(--any-border); margin-bottom:16px;">
+      <div id="view-rem-target-banner" style="display:flex; align-items:center; gap:14px; padding:14px 16px; background:var(--any-input-bg); border-radius:8px; border:1px solid var(--any-border); margin-bottom:16px;">
         <div id="view-rem-type-icon" style="width:42px; height:42px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;"></div>
         <div style="flex-grow:1;">
-          <h4 id="view-rem-target-name" style="font-size:15px; font-weight:700; color:#fff; margin:0;">-</h4>
+          <h4 id="view-rem-target-name" style="font-size:15px; font-weight:700; color:var(--any-text); margin:0;">-</h4>
           <div id="view-rem-target-sub" style="font-size:12px; color:var(--any-text-muted); margin-top:3px;">-</div>
         </div>
       </div>
@@ -1899,7 +2140,7 @@
       <div class="any-modal-body">
         <div class="any-form-group">
           <label>Target Association</label>
-          <div id="edit-rem-target-desc" style="padding:10px 14px; background:#222; border-radius:6px; font-size:13px; color:#fff; border:1px solid var(--any-border); display:flex; align-items:center; gap:8px;">
+          <div id="edit-rem-target-desc" style="padding:10px 14px; background:var(--any-input-bg); border-radius:6px; font-size:13px; color:var(--any-text); border:1px solid var(--any-border); display:flex; align-items:center; gap:8px;">
             -
           </div>
         </div>
@@ -2025,11 +2266,11 @@
         <input type="hidden" id="manage-support-id">
         <div class="any-form-group">
           <label>Ticket</label>
-          <div id="manage-support-subject" style="font-weight:600; color:#fff; font-size:14px;"></div>
+          <div id="manage-support-subject" style="font-weight:600; color:var(--any-text); font-size:14px;"></div>
         </div>
         <div class="any-form-group">
           <label>User Message</label>
-          <div id="manage-support-msg" style="color:var(--any-text-muted); font-size:13px; background:#242424; padding:8px; border-radius:6px;"></div>
+          <div id="manage-support-msg" style="color:var(--any-text-muted); font-size:13px; background:var(--any-input-bg); padding:8px; border-radius:6px; border:1px solid var(--any-border);"></div>
         </div>
         <div class="any-form-group">
           <label>Admin Response *</label>
@@ -2100,14 +2341,14 @@
     <div class="any-modal-header" style="border-bottom: 1px solid var(--any-border);">
       <div style="display:flex; align-items:center; gap:10px;">
         <span class="badge-status open" id="view-support-status-badge">OPEN</span>
-        <h3 id="view-support-modal-title" style="margin:0; font-size:16px; font-weight:700; color:#fff;">Ticket #</h3>
+        <h3 id="view-support-modal-title" style="margin:0; font-size:16px; font-weight:700; color:var(--any-text);">Ticket #</h3>
       </div>
       <button class="any-modal-close" onclick="closeModal('modal-support-view')">&times;</button>
     </div>
     <div class="any-modal-body" style="display:flex; flex-direction:column; gap:18px; max-height:75vh; overflow-y:auto;">
       
       <!-- Live Stepper Pipeline Tracker -->
-      <div style="background:#181818; border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:16px;">
+      <div style="background:var(--table-header-bg); border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:16px;">
         <div style="font-size:11px; font-weight:700; color:var(--any-text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">
           <i class="fa-solid fa-timeline"></i> Resolution Pipeline Status
         </div>
@@ -2153,7 +2394,7 @@
       <!-- Problem Description Message -->
       <div>
         <div class="rem-modal-detail-label" style="margin-bottom:6px;"><i class="fa-solid fa-comment-dots"></i> Issue Description</div>
-        <div id="view-support-msg" style="background:#181818; border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:14px; color:#e2e8f0; font-size:13.5px; line-height:1.5; white-space:pre-wrap;"></div>
+        <div id="view-support-msg" style="background:var(--any-input-bg); border:1px solid var(--any-border); border-radius:var(--radius-sm); padding:14px; color:var(--any-text); font-size:13.5px; line-height:1.5; white-space:pre-wrap;"></div>
       </div>
 
       <!-- Admin Resolution Response -->
@@ -2265,7 +2506,7 @@
     <div class="any-modal-header" style="border-bottom: 1px solid var(--any-border);">
       <div style="display:flex; align-items:center; gap:10px;">
         <span id="cal-modal-type-badge" class="badge-status" style="font-size:11px; padding:3px 8px;">BILL</span>
-        <h3 id="cal-modal-title" style="margin:0; font-size:16px; font-weight:700; color:#fff;">Item Name</h3>
+        <h3 id="cal-modal-title" style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);">Item Name</h3>
       </div>
       <button class="any-modal-close" onclick="closeModal('modal-calendar-item-detail')">&times;</button>
     </div>
@@ -2294,7 +2535,7 @@
       </div>
       <div class="cal-detail-item" style="display:flex; flex-direction:column; gap:6px;">
         <span class="cal-detail-label"><i class="fa-solid fa-align-left" style="color:var(--any-text-muted);"></i> Description & Notes</span>
-        <div id="cal-modal-desc" style="font-size:13px; color:var(--any-text); background:#1a1a1a; padding:12px; border-radius:8px; border:1px solid var(--any-border); min-height:48px; line-height:1.5;">No description provided.</div>
+        <div id="cal-modal-desc" style="font-size:13px; color:var(--any-text); background:var(--any-input-bg); padding:12px; border-radius:8px; border:1px solid var(--any-border); min-height:48px; line-height:1.5;">No description provided.</div>
       </div>
     </div>
     <div class="any-modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
@@ -2328,7 +2569,7 @@
         </ul>
       </div>
       <p style="font-size: 12px; color: var(--any-text-muted); margin-bottom: 8px;">
-        Type <strong style="color: #fff; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">DELETE</strong> below to confirm:
+        Type <strong style="color: var(--any-text); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">DELETE</strong> below to confirm:
       </p>
       <input type="text" class="any-input-field" id="input-confirm-delete-keyword" placeholder="DELETE" style="width: 100%; border-color: rgba(239,68,68,0.4);" oninput="checkDeleteConfirmationInput()">
     </div>
@@ -2350,8 +2591,8 @@
           <i class="fa-solid fa-bullhorn"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Broadcast System Announcement</h3>
-          <span style="font-size:11.5px; color:var(--any-text-muted);">Dispatches an in-app alert to all registered users</span>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);"><i class="fa-solid fa-bullhorn" style="color:#3b82f6; margin-right:6px;"></i> Broadcast System Announcement</h3>
+          <span style="font-size:12px; color:var(--any-text-muted); margin-top:2px; display:block;">Dispatches an instantaneous priority in-app notification to all registered active user accounts.</span>
         </div>
       </div>
       <button class="any-modal-close" onclick="closeModal('modal-admin-broadcast')">&times;</button>
@@ -2395,8 +2636,8 @@
           <i class="fa-solid fa-envelope-open-text"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Global Reminder Notification Templates</h3>
-          <span style="font-size:11.5px; color:var(--any-text-muted);">Defines the automated alert message format for all users</span>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);"><i class="fa-solid fa-envelope-open-text" style="color:#c084fc; margin-right:6px;"></i> Global Reminder Notification Templates</h3>
+          <span style="font-size:12px; color:var(--any-text-muted); margin-top:2px; display:block;">Configure standard automated reminder message patterns and token formatting across the entire organization.</span>
         </div>
       </div>
       <button class="any-modal-close" onclick="closeModal('modal-admin-templates')">&times;</button>
@@ -2416,12 +2657,12 @@
       <!-- BILL FORMAT SECTION -->
       <form id="form-admin-tpl-bill" onsubmit="handleAdminSaveTemplate(event, 'BILL')">
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:#a7f3d0;">
+          <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:var(--any-green);">
             <i class="fa-solid fa-info-circle"></i> Available placeholders:
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{billName}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{amount}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{dueDate}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{category}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{billName}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{amount}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{dueDate}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{category}</span>
           </div>
 
           <div class="any-form-group">
@@ -2445,12 +2686,12 @@
       <!-- EVENT FORMAT SECTION -->
       <form id="form-admin-tpl-event" onsubmit="handleAdminSaveTemplate(event, 'EVENT')" style="display:none;">
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:rgba(14,165,233,0.08); border:1px solid rgba(14,165,233,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:#bae6fd;">
+          <div style="background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2); border-radius:8px; padding:10px 14px; font-size:12px; color:var(--any-blue);">
             <i class="fa-solid fa-info-circle"></i> Available placeholders:
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventName}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventDate}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{eventTime}</span>
-            <span style="background:#1e1e1e; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace;">{location}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{eventName}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{eventDate}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{eventTime}</span>
+            <span style="background:var(--any-card); color:var(--any-text); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; border:1px solid var(--any-border);">{location}</span>
           </div>
 
           <div class="any-form-group">
@@ -2487,7 +2728,7 @@
           <i class="fa-solid fa-sliders"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Customize Reminder Message Format</h3>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);">Customize Reminder Message Format</h3>
           <span style="font-size:11.5px; color:var(--any-text-muted);">Customize the automated message format received by your account</span>
         </div>
       </div>
@@ -2515,10 +2756,10 @@
             </button>
           </div>
           <div style="font-size:11.5px; color:var(--any-text-muted);">
-            <span style="background:#222; padding:2px 6px; border-radius:4px; font-family:monospace; color:#38bdf8;">{billName}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{amount}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{dueDate}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{category}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{billName}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{amount}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{dueDate}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{category}</span>
           </div>
 
           <div class="any-form-group">
@@ -2549,10 +2790,10 @@
             </button>
           </div>
           <div style="font-size:11.5px; color:var(--any-text-muted);">
-            <span style="background:#222; padding:2px 6px; border-radius:4px; font-family:monospace; color:#38bdf8;">{eventName}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{eventDate}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{eventTime}</span>
-            <span style="background:#222; padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:#38bdf8;">{location}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{eventName}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{eventDate}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{eventTime}</span>
+            <span style="background:var(--any-card); padding:2px 6px; border-radius:4px; margin-left:4px; font-family:monospace; color:var(--any-blue); border:1px solid var(--any-border);">{location}</span>
           </div>
 
           <div class="any-form-group">
@@ -2589,7 +2830,7 @@
           <i class="fa-solid fa-receipt"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;" id="receipt-view-title">Payment Receipt</h3>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);" id="receipt-view-title">Payment Receipt</h3>
           <span style="font-size:11.5px; color:var(--any-text-muted);" id="receipt-view-sub">Verified Payment Proof</span>
         </div>
       </div>
@@ -2597,10 +2838,10 @@
     </div>
     <div class="any-modal-body" style="padding:16px 20px;">
       <!-- Receipt Summary Pill -->
-      <div id="receipt-view-meta-bar" style="display:flex; justify-content:space-between; align-items:center; background:#181818; padding:10px 14px; border-radius:8px; border:1px solid var(--any-border); margin-bottom:14px;">
+      <div id="receipt-view-meta-bar" style="display:flex; justify-content:space-between; align-items:center; background:var(--any-input-bg); padding:10px 14px; border-radius:8px; border:1px solid var(--any-border); margin-bottom:14px;">
         <div>
           <span style="font-size:11px; color:var(--any-text-muted); display:block;">Bill / Obligation:</span>
-          <strong style="font-size:13.5px; color:#fff;" id="receipt-view-bill-name">-</strong>
+          <strong style="font-size:13.5px; color:var(--any-text);" id="receipt-view-bill-name">-</strong>
         </div>
         <div style="text-align:right;">
           <span style="font-size:11px; color:var(--any-text-muted); display:block;">Settled Amount:</span>
@@ -2608,12 +2849,12 @@
         </div>
         <div style="text-align:right;">
           <span style="font-size:11px; color:var(--any-text-muted); display:block;">Paid Date:</span>
-          <span style="font-size:12px; color:#93c5fd;" id="receipt-view-paid-date">-</span>
+          <span style="font-size:12px; color:var(--any-blue);" id="receipt-view-paid-date">-</span>
         </div>
       </div>
 
       <!-- Receipt Preview Container -->
-      <div id="receipt-view-content" style="display:flex; align-items:center; justify-content:center; background:#111; border-radius:8px; border:1px solid rgba(255,255,255,0.06); padding:16px; min-height:280px; max-height:60vh; overflow:auto;">
+      <div id="receipt-view-content" style="display:flex; align-items:center; justify-content:center; background:var(--any-card); border-radius:8px; border:1px solid var(--any-border); padding:16px; min-height:280px; max-height:60vh; overflow:auto;">
         <img id="receipt-view-img" src="" alt="Payment Receipt" style="max-width:100%; max-height:55vh; object-fit:contain; border-radius:6px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
         <div id="receipt-view-doc-frame" style="display:none; width:100%; height:450px;"></div>
       </div>
@@ -2646,7 +2887,7 @@
           <i class="fa-solid fa-cloud-arrow-up"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Upload Payment Receipt</h3>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);">Upload Payment Receipt</h3>
           <span style="font-size:11.5px; color:var(--any-text-muted);" id="upload-receipt-bill-sub">Attach proof of payment</span>
         </div>
       </div>
@@ -2660,7 +2901,7 @@
         <div style="background:rgba(255,255,255,0.03); border:1px solid var(--any-border); border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
           <div>
             <span style="font-size:11px; color:var(--any-text-muted); display:block;">Target Bill:</span>
-            <strong style="color:#fff; font-size:13px;" id="upload-receipt-bill-name">-</strong>
+            <strong style="color: var(--any-text); font-size:13px;" id="upload-receipt-bill-name">-</strong>
           </div>
           <div style="text-align:right;">
             <span style="font-size:11px; color:var(--any-text-muted); display:block;">Amount:</span>
@@ -2676,16 +2917,16 @@
         <!-- Dropzone Box -->
         <div class="any-form-group">
           <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Receipt File (Image or Document)</label>
-          <div id="receipt-dropzone-box" style="border:2px dashed rgba(255,255,255,0.15); border-radius:8px; padding:24px 16px; text-align:center; background:#181818; cursor:pointer; transition:var(--transition);" onclick="document.getElementById('receipt-file-input').click()">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size:28px; color:#60a5fa; margin-bottom:8px; display:block;"></i>
-            <div style="font-size:13px; font-weight:600; color:#fff; margin-bottom:4px;">Click to browse or drop receipt file here</div>
+          <div id="receipt-dropzone-box" style="border:2px dashed var(--any-border); border-radius:8px; padding:24px 16px; text-align:center; background:var(--any-input-bg); cursor:pointer; transition:var(--transition);" onclick="document.getElementById('receipt-file-input').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:28px; color:var(--any-blue); margin-bottom:8px; display:block;"></i>
+            <div style="font-size:13px; font-weight:600; color:var(--any-text); margin-bottom:4px;">Click to browse or drop receipt file here</div>
             <div style="font-size:11px; color:var(--any-text-muted);">Supports PNG, JPG, JPEG, WebP, PDF images</div>
             <input type="file" id="receipt-file-input" accept="image/*" style="display:none;" onchange="handleReceiptFileSelect(event)">
           </div>
         </div>
 
         <!-- Upload Preview Container -->
-        <div id="receipt-upload-preview-container" style="display:none; margin-top:12px; text-align:center; background:#121212; padding:12px; border-radius:8px; border:1px solid var(--any-border);">
+        <div id="receipt-upload-preview-container" style="display:none; margin-top:12px; text-align:center; background:var(--any-card); padding:12px; border-radius:8px; border:1px solid var(--any-border);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <span style="font-size:11.5px; color:#a7f3d0;"><i class="fa-solid fa-check"></i> File selected</span>
             <button type="button" class="btn-any-subtle" onclick="clearReceiptUploadSelection()" style="padding:2px 8px; font-size:11px; color:#ef4444;"><i class="fa-solid fa-xmark"></i> Remove</button>
@@ -2712,7 +2953,7 @@
           <i class="fa-solid fa-circle-check"></i>
         </div>
         <div>
-          <h3 style="margin:0; font-size:16px; font-weight:700; color:#fff;">Mark Bill as Paid</h3>
+          <h3 style="margin:0; font-size:16px; font-weight:700; color: var(--any-text);">Mark Bill as Paid</h3>
           <span style="font-size:11.5px; color:var(--any-text-muted);">Record bill settlement and upload proof</span>
         </div>
       </div>
@@ -2723,10 +2964,10 @@
         <input type="hidden" id="pay-bill-id">
         <input type="hidden" id="pay-receipt-data-url">
 
-        <div style="background:#181818; border:1px solid var(--any-border); border-radius:8px; padding:12px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="background:var(--any-input-bg); border:1px solid var(--any-border); border-radius:8px; padding:12px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
           <div>
             <span style="font-size:11px; color:var(--any-text-muted); display:block;">Bill Title:</span>
-            <strong style="color:#fff; font-size:13.5px;" id="pay-bill-name">-</strong>
+            <strong style="color:var(--any-text); font-size:13.5px;" id="pay-bill-name">-</strong>
           </div>
           <div style="text-align:right;">
             <span style="font-size:11px; color:var(--any-text-muted); display:block;">Settlement Amount:</span>
@@ -2741,13 +2982,13 @@
 
         <div class="any-form-group">
           <label style="font-size:12px; color:var(--any-text-muted); margin-bottom:6px; display:block;">Attach Receipt (Optional)</label>
-          <div id="pay-dropzone-box" style="border:2px dashed rgba(255,255,255,0.15); border-radius:8px; padding:18px 14px; text-align:center; background:#141414; cursor:pointer;" onclick="document.getElementById('pay-receipt-file-input').click()">
-            <i class="fa-solid fa-receipt" style="font-size:22px; color:#34d399; margin-bottom:6px; display:block;"></i>
-            <div style="font-size:12px; font-weight:600; color:#fff;">Click to attach payment receipt</div>
+          <div id="pay-dropzone-box" style="border:2px dashed var(--any-border); border-radius:8px; padding:18px 14px; text-align:center; background:var(--any-input-bg); cursor:pointer;" onclick="document.getElementById('pay-receipt-file-input').click()">
+            <i class="fa-solid fa-receipt" style="font-size:22px; color:#10b981; margin-bottom:6px; display:block;"></i>
+            <div style="font-size:12px; font-weight:600; color:var(--any-text);">Click to attach payment receipt</div>
             <div style="font-size:10.5px; color:var(--any-text-muted);">Attach receipt photo or snapshot</div>
             <input type="file" id="pay-receipt-file-input" accept="image/*" style="display:none;" onchange="handlePayReceiptFileSelect(event)">
           </div>
-          <div id="pay-receipt-preview-container" style="display:none; margin-top:10px; text-align:center; background:#121212; padding:8px; border-radius:6px; border:1px solid var(--any-border);">
+          <div id="pay-receipt-preview-container" style="display:none; margin-top:10px; text-align:center; background:var(--any-card); padding:8px; border-radius:6px; border:1px solid var(--any-border);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
               <span style="font-size:11px; color:#a7f3d0;"><i class="fa-solid fa-check"></i> Receipt attached</span>
               <button type="button" class="btn-any-subtle" onclick="clearPayReceiptSelection()" style="padding:2px 6px; font-size:10px; color:#ef4444;"><i class="fa-solid fa-xmark"></i> Remove</button>
