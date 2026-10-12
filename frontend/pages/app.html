@@ -746,12 +746,21 @@
       <section id="view-reminders" class="view-section">
         <div class="rem-container">
           
-          <!-- Reminders Header Banner (Matches Events & Audits design) -->
-          <div class="any-card-panel" style="margin-bottom: 20px;">
-            <div class="panel-header-row" style="margin-bottom: 0;">
+          <!-- Reminders Header Banner (Main Function: Scheduled Reminders) -->
+          <div class="myday-header-box" style="margin-bottom: 20px;">
+            <div class="greeting-row">
               <div>
-                <h3><i class="fa-regular fa-clock" style="color:#f59e0b;"></i> Scheduled Reminders</h3>
-                <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Configure multi-channel automated alert schedules, set advance lead-time notifications for pending bills and events, customize dispatch rules, and monitor upcoming notification queues.</p>
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                  <span class="badge-status" style="background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                    <i class="fa-regular fa-clock"></i> AUTOMATED SCHEDULING &amp; DISPATCH
+                  </span>
+                </div>
+                <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                  <i class="fa-regular fa-clock" style="color:#f59e0b;"></i> Scheduled Reminders
+                </h1>
+                <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                  Configure multi-channel automated alert schedules, set advance lead-time notifications for pending bills and events, customize dispatch rules, and monitor upcoming notification queues.
+                </p>
               </div>
               <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <button class="btn-any-blue" onclick="openAddReminderModal()">
@@ -894,12 +903,21 @@
 
       <!-- ================= VIEW 8: REPORTS, ANALYTICS & HISTORY ================= -->
       <section id="view-reports" class="view-section">
-        <!-- Reports Header Banner (Matches Events & Audits design) -->
-        <div class="any-card-panel" style="margin-bottom: 20px;">
-          <div class="panel-header-row" style="margin-bottom: 0;">
+        <!-- Reports Header Banner -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
             <div>
-              <h3><i class="fa-solid fa-chart-pie" style="color:#c084fc;"></i> Reports, Analytics &amp; History</h3>
-              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Analyze organizational financial obligations, track pending bills and settled payments, evaluate event attendance rates, audit uploaded payment receipts, and export comprehensive audit statements in CSV, Excel, or Print / PDF formats.</p>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status resolved" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-chart-pie"></i> ANALYTICS & AUDIT
+                </span>
+              </div>
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-chart-pie" style="color:#c084fc;"></i> Reports, Analytics &amp; History
+              </h1>
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Analyze organizational financial obligations, track pending bills and settled payments, evaluate event attendance rates, audit uploaded payment receipts, and export comprehensive audit statements in CSV, Excel, or Print / PDF formats.
+              </p>
             </div>
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
               <button class="btn-any-subtle" onclick="exportReportsData('csv')" title="Download CSV Spreadsheet">
@@ -916,10 +934,9 @@
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- 4 Analytics Metric Cards -->
-        <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+          <!-- 4 Analytics Metric Cards -->
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 20px;">
             <!-- Pending Bills Card -->
             <div class="stat-counter-card">
               <div class="icon-bubble" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
@@ -972,6 +989,7 @@
               </div>
             </div>
           </div>
+        </div>
 
         <!-- Sub-Navigation Segmented Buttons -->
         <div class="rem-segmented-nav" style="margin-bottom: 16px;">
@@ -1284,12 +1302,21 @@
 
       <!-- ================= VIEW 12: USER ACCOUNTS (ADMIN ONLY) ================= -->
       <section id="view-users" class="view-section">
-        <!-- User Directory Header Banner (Matches Events & Bills design) -->
-        <div class="any-card-panel" style="margin-bottom: 20px;">
-          <div class="panel-header-row" style="margin-bottom: 0;">
+        <!-- User Directory Header Banner (Admin Main Function) -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
             <div>
-              <h3><i class="fa-solid fa-users" style="color:#8b5cf6;"></i> Registered User Directory</h3>
-              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Comprehensive administrative oversight of all registered platform members, account status verification, contact details, security credentials, and organization access rights.</p>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status resolved" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-users-gear"></i> USER MANAGEMENT &amp; ACCESS CONTROL
+                </span>
+              </div>
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-users" style="color:#8b5cf6;"></i> Registered User Directory
+              </h1>
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Comprehensive administrative oversight of all registered platform members, account status verification, contact details, security credentials, and organization access rights.
+              </p>
             </div>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
               <button class="btn-any-subtle" onclick="loadUsersView()" title="Refresh Users Directory">
@@ -1297,35 +1324,35 @@
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- User Stats KPI Counter Row for Admin -->
-        <div class="stats-counter-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 20px;">
-          <div class="stat-counter-card">
-            <div class="icon-bubble" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
-              <i class="fa-solid fa-users"></i>
+          <!-- User Stats KPI Counter Row for Admin -->
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 20px;">
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-user-count" style="color:#c084fc;">0</div>
+                <div class="stat-lbl">Total Registered Users</div>
+              </div>
             </div>
-            <div class="stat-content">
-              <div class="stat-num" id="admin-user-count" style="color:#c084fc;">0</div>
-              <div class="stat-lbl">Total Registered Users</div>
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-active-count" style="color:#10b981;">0</div>
+                <div class="stat-lbl">Active Accounts</div>
+              </div>
             </div>
-          </div>
-          <div class="stat-counter-card">
-            <div class="icon-bubble" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-              <i class="fa-solid fa-user-check"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-num" id="admin-active-count" style="color:#10b981;">0</div>
-              <div class="stat-lbl">Active Accounts</div>
-            </div>
-          </div>
-          <div class="stat-counter-card">
-            <div class="icon-bubble" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-              <i class="fa-solid fa-bell"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-num" id="admin-reminders-total" style="color:#3b82f6;">0</div>
-              <div class="stat-lbl">System Reminders</div>
+            <div class="stat-counter-card">
+              <div class="icon-bubble" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                <i class="fa-solid fa-bell"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-num" id="admin-reminders-total" style="color:#3b82f6;">0</div>
+                <div class="stat-lbl">System Reminders</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1559,12 +1586,21 @@
 
       <!-- ================= VIEW: NOTIFICATION MANAGEMENT CENTER ================= -->
       <section id="view-notifications" class="view-section">
-        <!-- Notification Header Banner (Matches Events & Audits design) -->
-        <div class="any-card-panel" style="margin-bottom: 20px;">
-          <div class="panel-header-row" style="margin-bottom: 0;">
+        <!-- Notification Header Banner -->
+        <div class="myday-header-box" style="margin-bottom: 20px;">
+          <div class="greeting-row">
             <div>
-              <h3><i class="fa-solid fa-bell" style="color:#38bdf8;"></i> Notification Management Center</h3>
-              <p style="font-size: 12.5px; color: var(--any-text-muted); margin-top: 3px;">Monitor automated reminder dispatches, customize personalized alert notification templates, review pending and read notifications, and track alert delivery status across all organization workflows.</p>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <span class="badge-status pending" style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); font-size:11px; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-bell"></i> IN-APP NOTIFICATIONS &amp; DISPATCH
+                </span>
+              </div>
+              <h1 class="page-main-header" style="font-size: 24px; font-weight: 700; color: var(--any-text); margin: 6px 0 8px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-bell" style="color:#38bdf8;"></i> Notification Management Center
+              </h1>
+              <p class="page-header-desc" style="color: var(--any-text-muted); font-size: 13.5px; max-width: 860px; line-height: 1.6; margin: 0;">
+                Monitor automated reminder dispatches, customize personalized alert notification templates, review pending and read notifications, and track alert delivery status across all organization workflows.
+              </p>
             </div>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
               <button class="btn-any-blue" onclick="openUserTemplatesModal()" style="background:#8b5cf6;" title="Customize personal reminder message formats">
@@ -1578,10 +1614,9 @@
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- Summary Metric Cards (4 Cards) -->
-        <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+          <!-- Summary Metric Cards (4 Cards) -->
+          <div class="stats-counter-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 20px;">
             <div class="stat-counter-card">
               <div class="icon-bubble" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
                 <i class="fa-solid fa-bell"></i>
@@ -1622,6 +1657,7 @@
               </div>
             </div>
           </div>
+        </div>
 
         <!-- Search, Filter, and Count Bar -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">

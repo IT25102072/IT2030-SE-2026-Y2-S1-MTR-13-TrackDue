@@ -1,21 +1,10 @@
-# MEMBER 4: Nihashini A. (IT25102080)
-**Major Function 6.4:** Reminder Scheduling Management
-**Branch Name:** eature/reminder-scheduling-it25102080
+﻿# TrackDue - Member Contribution & Viva Guide
 
-## Backend Files in this Folder:
-- ackend/src/main/java/com/trackdue/entity/Reminder.java
-- ackend/src/main/java/com/trackdue/repository/ReminderRepository.java
-- ackend/src/main/java/com/trackdue/service/ReminderService.java
-- ackend/src/main/java/com/trackdue/service/ReminderTriggerService.java (Automated engine & cron evaluator)
-- ackend/src/main/java/com/trackdue/controller/ReminderController.java
+This repository contains the collective contribution of all 6 team members. Individual member guides are documented below and in the `docs/` folder.
 
-## Frontend Files & Sections:
-- rontend/pages/app.html (Reminders section #view-reminders, Reminder Schedule Modal #modal-reminder)
-- rontend/assets/js/app.js (Functions: loadReminders(), saveReminder(), 	oggleReminderStatus(), deleteReminder(), 	riggerManualReminderCheck())
-- rontend/services/api.js (API endpoints: /api/reminders, /api/reminders/trigger-check)
-
-## CRUD Operations to Explain at Viva:
-- **Create:** Configuring custom reminder timing (7 days, 3 days, 1 day before, or due date).
-- **Read:** Viewing active schedules, upcoming scheduled alerts, triggered status.
-- **Update:** Modifying reminder schedule intervals, toggling active/inactive.
-- **Delete:** Removing reminder schedules.
+- [Member 1: User Account Management (IT25102070)](docs/MEMBER_1_IT25102070_GUIDE.md)
+- [Member 2: Bill Management (IT25102072)](docs/MEMBER_2_IT25102072_GUIDE.md)
+- [Member 3: Event Management (IT25102067)](docs/MEMBER_3_IT25102067_GUIDE.md)
+- [Member 4: Reminder Scheduling (IT25102080)](docs/MEMBER_4_IT25102080_GUIDE.md)
+- [Member 5: Notification Management (IT25102077)](docs/MEMBER_5_IT25102077_GUIDE.md)
+- [Member 6: Reports, History & Support (IT25102069)](docs/MEMBER_6_IT25102069_GUIDE.md)
